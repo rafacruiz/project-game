@@ -1,7 +1,7 @@
 
 const BG_MAIN = ['/assets/images/bgs/backg1.png', '/assets/images/bgs/backg2.png'];
 
-const LEVEL_DURATION = 9000; 
+const LEVEL_DURATION = 6000; 
 const FADE_DURATION = 2000;
 
 const CANVAS_W = 800;
