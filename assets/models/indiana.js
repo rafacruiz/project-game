@@ -1,11 +1,11 @@
-class Mario {
+class Indianajones {
 
     constructor (ctx, x, y) {
         this.ctx = ctx;
         this.x = x;
         this.y = y;
-        this.h = 50;
-        this.w = 50;
+        this.h = 80;
+        this.w = 70;
 
         this.vx = 0;
         this.vy = 0;
@@ -14,45 +14,48 @@ class Mario {
         this.ground = 0;
 
         this.sprite = new Image();
-        this.sprite.src = SP_MARIO;
-        this.sprite.framesV = 2; // Cantidad de sprite en la imagen
-        this.sprite.framesH = 2;
+        this.sprite.src = SP_INDI;
+        this.sprite.framesV = 9; // Cantidad de sprite en la imagen
+        this.sprite.framesH = 4;
         this.sprite.frameIndexV = 0; // indice para eligir el sprite
-        this.sprite.frameIndexH = 1;
+        this.sprite.frameIndexH = 0;
         this.sprite.onload = () => {
             this.sprite.isReady = true;
             this.sprite.Wframe = Math.floor(this.sprite.width / this.sprite.framesV); // medida un sprite
             this.sprite.Hframe = Math.floor(this.sprite.height / this.sprite.framesH);
-            this.w = this.sprite.Wframe;
+            //this.w = this.sprite.Wframe;
             //this.h = this.sprite.Hframe; // Asignamos la media del sprite al objeto
         }
 
         this.isJumping = false;
 
+        this.levelEnd = false;
+
         this.drawCount = 0;
 
-        this.lifeMario = 100;
+        this.lifeIndi = 100;
     }
 
     groundTo(groundY) {
-        this.y = groundY - this.h; // Altura de en el suelo restado la altura de mario
-        this.ground = this.y; // Suelo de mario
+        this.y = groundY - this.h; // Altura de en el suelo restado la altura
+        this.ground = this.y; // Suelo al saltar
     }
 
     onKeypress(event) {
         const isPressButton = event.type === 'keydown';
-        
+        this.levelEnd = false;
+
         switch (event.keyCode) {
             case KEY_LEFT:
                 if (isPressButton) {
-                    this.vx = -MARIO_VX;
+                    this.vx = -INDI_VX;
                 } else {
                     this.vx = 0;
                 }
                 break;
             case KEY_RIGTH:
                 if (isPressButton) {
-                    this.vx = MARIO_VX;
+                    this.vx = INDI_VX;
                 } else {
                     this.vx = 0;
                 }
@@ -60,8 +63,8 @@ class Mario {
             case KEY_UP:
                 if (!this.isJumping) {
                     this.isJumping = true;
-                    this.vy = -MARIO_VY;
-                    this.ay = MARIO_AY;
+                    this.vy = -INDI_VY;
+                    this.ay = INDI_AY;
                 }
                 break;
         }
@@ -103,12 +106,14 @@ class Mario {
 
     animate() {
         if (this.isJumping) {
-            this.sprite.frameIndexH = 0;
+            this.sprite.frameIndexH = 1;
             this.sprite.frameIndexV = 0;
         } else if (this.vx !== 0) {
-            this.animateFrames(1, 0, 2, 7); // Repasar
+            this.animateFrames(3, 0, 4, 5);
+        } else if (this.levelEnd) {
+            this.animateFrames(2, 1, 5, 17);
         } else {
-            this.sprite.frameIndexH = 1;
+            this.sprite.frameIndexH = 0;
             this.sprite.frameIndexV = 0;
         }
     }
