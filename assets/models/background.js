@@ -20,7 +20,7 @@ class Background {
         this.fadeTransitionState = 'playing'; // 'playing' | 'fade'
         this.fadeTimeTransition = 0;
 
-        this.fadeOpacity = 1;
+        this.fadeOpacity = 0;
         this.fadeAmount = 0.01;
     }
 
@@ -38,34 +38,44 @@ class Background {
     }
 
     transitionFade() {
-        if (this.fadeTransitionState == 'fade') {
+        if (this.fadeTransitionState == 'fadeOut') {
             
             this.ctx.globalAlpha = this.fadeOpacity;
             this.ctx.fillStyle = "black";
             this.ctx.fillRect(this.x, this.y, this.w, this.h);
 
-            this.fadeOpacity -=  this.fadeAmount;
+            //this.fadeOpacity -=  this.fadeAmount;
+            this.fadeOpacity += this.fadeAmount;
 
-            if (this.fadeOpacity < 0) {
-                this.fadeOpacity = 1;
-                this.fadeTransitionState = 'pause';
-            }
+            // if (this.fadeOpacity < 0) {
+            //     this.fadeOpacity = 1;
+            //     //this.fadeTransitionState = 'pause';
+            // }
 
-            console.log('fade');
-        } 
-        
-        if (this.fadeTransitionState == 'pause') {
+            console.log('fadeOut');
+        } else if (this.fadeTransitionState == 'pause') {
             this.ctx.globalAlpha = 1;
+            //this.fadeOpacity = 1;
             this.ctx.fillStyle = "black";
             this.ctx.fillRect(this.x, this.y, this.w, this.h);
 
             console.log('Total black');
+        } else if (this.fadeTransitionState == 'fadeIn') {
+            this.ctx.globalAlpha = this.fadeOpacity;
+            this.ctx.fillStyle = "black";
+            this.ctx.fillRect(0, 0, this.w, this.h);
+
+            this.fadeOpacity -= this.fadeAmount;
+            
+            console.log('fadeIn');
         }
+
+        this.ctx.globalAlpha = 1;
     }
 
     draw() {
 
-        if (this.fadeTransitionState  !== 'pause') {
+        if (this.fadeTransitionState !== 'pause') {
             if (this.sprite.isReady) {
             
                 this.ctx.drawImage(

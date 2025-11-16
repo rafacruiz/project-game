@@ -17,6 +17,8 @@ class Game {
 
         this.levelLifePlayer = 100;
         this.levelStartTime = Date.now();
+        this.transitionTargetLevel = null;
+        this.transitionStart = 0;
                         
         this.enemies = [];
 
@@ -55,25 +57,64 @@ class Game {
     }
 
     checkLevel() {
-        const timeNow = Date.now();
+        
 
         if (this.background.isFadeTransition) {
-            if (timeNow - this.background.fadeTimeTransition > TRANSITION_FADE_DURATION) {
-                console.log('Transicion realizada y cargando level');
-                this.enemies = [];
+
+            const timeNow = Date.now();
+            const elapsed = timeNow - this.transitionStart;
+
+            if (this.background.fadeTransitionState === 'fadeOut') {
+                if (elapsed >= TRANSITION_FADE_DURATION) {
+                    this.background.setLevel(this.transitionTargetLevel);
+                    this.background.fadeTransitionState = 'pause';
+                    this.transitionStart = Date.now();
+                }
+            } else if (this.background.fadeTransitionState === 'pause') {
+                if (elapsed >= TRANSITION_FADE_DURATION) {
+                    this.background.fadeTransitionState = 'fadeIn';
+                    this.transitionStart = Date.now();
+                }
+            } else if (this.background.fadeTransitionState === 'fadeIn') {
+                if (elapsed >= TRANSITION_FADE_DURATION) {
+                    this.enemies = [];
                 
-                this.levelStartTime = Date.now();
+                    this.levelStartTime = Date.now();
 
-                this.background.isFadeTransition = false;
-                this.background.fadeTransitionState = 'fade';
+                    this.background.isFadeTransition = false;
 
-                const nextBackgroundLevel = this.background.currentLevel+=1;
-                this.background.setLevel(nextBackgroundLevel);
+                    this.transitionTargetLevel = null;
 
-                this.indianaJones.x = (this.canvas.width - this.indianaJones.w) / 2;
-                this.indianaJones.levelEnd = false;
+                    this.indianaJones.x = (this.canvas.width - this.indianaJones.w) / 2;
+                    this.indianaJones.levelEnd = false;
+                }
             }
+
+            return;
+
+
+
+
+
+
+            // if (timeNow - this.background.fadeTimeTransition > TRANSITION_FADE_DURATION) {
+            //     console.log('Transicion realizada y cargando level');
+            //     this.enemies = [];
+                
+            //     this.levelStartTime = Date.now();
+
+            //     this.background.isFadeTransition = false;
+            //     this.background.fadeTransitionState = 'fade';
+
+            //     const nextBackgroundLevel = this.background.currentLevel+=1;
+            //     this.background.setLevel(nextBackgroundLevel);
+
+            //     this.indianaJones.x = (this.canvas.width - this.indianaJones.w) / 2;
+            //     this.indianaJones.levelEnd = false;
+            // }
         } else {
+            const timeNow = Date.now();
+
             if (timeNow - this.levelStartTime > LEVEL_DURATION && this.indianaJones.lifeIndi > 0) {
                 this.nextLevel();
             }
@@ -85,10 +126,14 @@ class Game {
     nextLevel() {
         if (this.background.isFadeTransition) return;
         
-        this.background.fadeOpacity = 1;
+        this.background.fadeOpacity = 0;
         this.background.isFadeTransition = true;
-        this.background.fadeTransitionState = 'fade';
-        this.background.fadeTimeTransition = Date.now();
+        
+        const nextBackgroundLevel = this.background.currentLevel+=1;
+        this.transitionTargetLevel = nextBackgroundLevel;
+
+        this.background.fadeTransitionState = 'fadeOut';
+        this.transitionStart = Date.now();
 
         this.indianaJones.levelEnd = true;
 
@@ -105,7 +150,7 @@ class Game {
     }
 
     gameWin() {
-        if (this.indianaJones.lifeIndi > 0 && this.background.currentLevel > 1) {
+        if (this.indianaJones.lifeIndi > 0 && this.background.currentLevel > 2) {
             this.stop();
             console.log('GAME WIN!!');
         }
