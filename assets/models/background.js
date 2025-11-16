@@ -17,6 +17,9 @@ class Background {
         this.loadNextPlatform();
 
         this.isFadeTransition = false;
+        this.fadeTransitionState = 'playing'; // 'playing' | 'fade'
+        this.fadeTimeTransition = 0;
+
         this.fadeOpacity = 1;
         this.fadeAmount = 0.01;
     }
@@ -34,23 +37,49 @@ class Background {
         this.loadNextPlatform();
     }
 
-    draw() {
-        if (this.sprite.isReady) {
-        
-            this.ctx.drawImage(
-                this.sprite,
-                this.x,
-                this.y,
-                this.w,
-                this.h
-            );
-        }
-
-        if (this.isFadeTransition) {
+    transitionFade() {
+        if (this.fadeTransitionState == 'fade') {
+            
+            this.ctx.globalAlpha = this.fadeOpacity;
             this.ctx.fillStyle = "black";
-            //this.ctx.globalAlpha = this.game.transition;
-            this.ctx.fillRect(0, 0, this.w, this.h);
+            this.ctx.fillRect(this.x, this.y, this.w, this.h);
+
+            this.fadeOpacity -=  this.fadeAmount;
+
+            if (this.fadeOpacity < 0) {
+                this.fadeOpacity = 1;
+                this.fadeTransitionState = 'pause';
+            }
+
+            console.log('fade');
+        } 
+        
+        if (this.fadeTransitionState == 'pause') {
             this.ctx.globalAlpha = 1;
+            this.ctx.fillStyle = "black";
+            this.ctx.fillRect(this.x, this.y, this.w, this.h);
+
+            console.log('Total black');
+        }
+    }
+
+    draw() {
+
+        if (this.fadeTransitionState  !== 'pause') {
+            if (this.sprite.isReady) {
+            
+                this.ctx.drawImage(
+                    this.sprite,
+                    this.x,
+                    this.y,
+                    this.w,
+                    this.h
+                );
+            }
+        }
+        
+        if (this.isFadeTransition) {
+            this.transitionFade();
         }
     }
 }

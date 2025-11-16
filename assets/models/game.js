@@ -17,9 +17,7 @@ class Game {
 
         this.levelLifePlayer = 100;
         this.levelStartTime = Date.now();
-        this.fadeTimeTransition = 0;
-        this.state = 'playing'; // 'playing' | 'fade'
-                
+                        
         this.enemies = [];
 
         this.setupListeners();
@@ -60,11 +58,19 @@ class Game {
         const timeNow = Date.now();
 
         if (this.background.isFadeTransition) {
-            if (timeNow - this.fadeTimeTransition > TRANSITION_FADE_DURATION) {
+            if (timeNow - this.background.fadeTimeTransition > TRANSITION_FADE_DURATION) {
                 console.log('Transicion realizada y cargando level');
                 this.enemies = [];
+                
                 this.levelStartTime = Date.now();
+
                 this.background.isFadeTransition = false;
+                this.background.fadeTransitionState = 'fade';
+
+                const nextBackgroundLevel = this.background.currentLevel+=1;
+                this.background.setLevel(nextBackgroundLevel);
+
+                this.indianaJones.x = (this.canvas.width - this.indianaJones.w) / 2;
                 this.indianaJones.levelEnd = false;
             }
         } else {
@@ -79,17 +85,14 @@ class Game {
     nextLevel() {
         if (this.background.isFadeTransition) return;
         
+        this.background.fadeOpacity = 1;
         this.background.isFadeTransition = true;
-            
-        this.indianaJones.x = (this.canvas.width - this.indianaJones.w) / 2;
+        this.background.fadeTransitionState = 'fade';
+        this.background.fadeTimeTransition = Date.now();
+
         this.indianaJones.levelEnd = true;
 
-        this.fadeTimeTransition = Date.now();
-
-        const nextBackgroundLevel = this.background.currentLevel+=1;
-        this.background.setLevel(nextBackgroundLevel);
-
-        console.log('Change Next Level: ', this.background.currentLevel);
+        console.log('Current Level: ', this.background.currentLevel);
     }
 
     setupListeners() {
