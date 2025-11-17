@@ -55,25 +55,59 @@ class Game {
         
         switch (this.background.currentLevel + 1) {
             case 1:
-                    
+                
 
                 console.info('Enemies Level 1');
                 break;
             case 2:
                 this.enemyInterval = setInterval(() => {            
-                    const directionEnemyRandom = SP_ENEMIES[Math.floor(Math.random() * SP_ENEMIES.length)];
+                    const directionEnemyRandom = SP_ENEMIES_LEVEL1[Math.floor(Math.random() 
+                                                * SP_ENEMIES_LEVEL1.length)];
                     
-                    const speedEnemy = (Math.random() > 0.2 && directionEnemyRandom.direction > 0) ? -(3 + Math.random() * 3) : (3 + Math.random() * 3);
+                    const speedEnemy = (Math.random() > 0.2 && 
+                                        directionEnemyRandom.direction > 0) 
+                                        ? -(3 + Math.random() * 3) : (3 + Math.random() * 3);
 
                     const enemy = new Ninja(this.ctx, speedEnemy, directionEnemyRandom);
                     enemy.groundTo(this.canvas.height - GROUND_Y);
+
                     this.enemies.push(enemy);
 
                 }, SP_ENEMY_SPAWN_INTERVAL);
-
+                
                 console.info('Enemies Level 2');
                 break;
             case 3:
+                this.enemyInterval = setInterval(() => {
+                    const indexEnemy = Math.floor(Math.random() 
+                                        * SP_ENEMIES_LEVEL2.length);
+                    
+                    const enemyRandom = SP_ENEMIES_LEVEL2[indexEnemy];
+
+                    const speedEnemy =  -(3 + Math.random() * 3);
+
+                    let enemy = null;
+                    let heightEnemy = null;
+
+                    switch (indexEnemy) {
+                        case 0:
+                            heightEnemy = (this.canvas.height - GROUND_Y) 
+                                            - (5 + Math.random() * 70);
+                    
+                            enemy = new Bat(this.ctx, speedEnemy, enemyRandom);
+                            enemy.groundTo(heightEnemy);
+                            break;
+                        case 1:
+                            heightEnemy = (this.canvas.height - GROUND_Y);
+                    
+                            enemy = new Rat(this.ctx, speedEnemy, enemyRandom);
+                            enemy.groundTo(heightEnemy);
+                            break;
+                    }
+                    
+                    this.enemies.push(enemy);
+                }, 700);
+
                 console.info('Enemies Level 3');
                 break;
             case 4:
