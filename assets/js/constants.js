@@ -5,14 +5,15 @@ const CANVAS_H = 600;
 const FPS = 1000 / 60;
 
 const LEVEL_DURATION = 6000;
-
 const TRANSITION_FADE_DURATION = 3000;
 const TRANSITION_PAUSE_DURATION = 3000;
 
 const GROUND_Y = 150;
 
 const BG_MAIN = ['/assets/images/bgs/backg1.png',
-                '/assets/images/bgs/backg2.png'];
+                '/assets/images/bgs/backg3.png',
+                '/assets/images/bgs/backg2.png',
+                '/assets/images/bgs/backg4.png',];
 
 const BG_VX = 5;
 

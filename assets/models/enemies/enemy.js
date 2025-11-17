@@ -11,19 +11,25 @@ class Enemy {
     
         this.ground = 0;
 
-        this.sprite = new Image();
-        this.sprite.src = config.src ?? SP_ENEMY;
-        this.sprite.framesV = config.framesV; // Cantidad de sprite en la imagen
-        this.sprite.framesH = config.framesH;
-        this.sprite.frameIndexV = config.initV ?? 1; // indice para eligir el sprite
-        this.sprite.frameIndexH = config.initH ?? 0;
-        this.sprite.onload = () => {
-            this.sprite.isReady = true;
-            this.sprite.Wframe = Math.floor(this.sprite.width / this.sprite.framesV); // medida un sprite
-            this.sprite.Hframe = Math.floor(this.sprite.height / this.sprite.framesH);
-        }
+        this.sprite = this.initSprite(config);
 
         this.drawCount = 0;
+    }
+
+    initSprite(config) {
+        const sprite = new Image();
+        sprite.src = config.src;
+        sprite.framesV = config.framesV; // Cantidad de sprite en la imagen
+        sprite.framesH = config.framesH;
+        sprite.frameIndexV = config.initV ?? 1; // indice para eligir el sprite
+        sprite.frameIndexH = config.initH ?? 0;
+        sprite.onload = () => {
+            sprite.isReady = true;
+            sprite.Wframe = Math.floor(sprite.width / sprite.framesV); // medida un sprite
+            sprite.Hframe = Math.floor(sprite.height / sprite.framesH);
+        }
+
+        return sprite;
     }
 
     groundTo(groundY) {

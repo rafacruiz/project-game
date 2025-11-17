@@ -17,13 +17,17 @@ class Game {
 
         this.levelLifePlayer = 100;
         this.levelStartTime = Date.now();
-        this.transitionTargetLevel = null;
+        this.transitionNextLevel = null;
         this.transitionStart = 0;
                         
         this.enemies = [];
 
         this.setupListeners();
-        this.showEnemiesRandom();
+
+        this.enemyInterval = undefined;
+
+        this.currentLoadedLevel = undefined;
+
     }
 
     start() {
@@ -44,21 +48,41 @@ class Game {
     }
 
     showEnemiesRandom() {
-        setInterval(() => {            
-            const directionEnemyRandom = SP_ENEMIES[Math.floor(Math.random() * SP_ENEMIES.length)];
-            
-            const speedEnemy = (Math.random() > 0.2 && directionEnemyRandom.direction > 0) ? -(3 + Math.random() * 3) : (3 + Math.random() * 3);
 
-            const enemy = new Enemy(this.ctx, speedEnemy, directionEnemyRandom);
-            enemy.groundTo(this.canvas.height - GROUND_Y);
-            this.enemies.push(enemy);
+        if (this.enemyInterval) {
+            clearInterval(this.enemyInterval);
+        }
+        
+        switch (this.background.currentLevel + 1) {
+            case 1:
+                    
 
-        }, SP_ENEMY_SPAWN_INTERVAL);
+                console.info('Enemies Level 1');
+                break;
+            case 2:
+                this.enemyInterval = setInterval(() => {            
+                    const directionEnemyRandom = SP_ENEMIES[Math.floor(Math.random() * SP_ENEMIES.length)];
+                    
+                    const speedEnemy = (Math.random() > 0.2 && directionEnemyRandom.direction > 0) ? -(3 + Math.random() * 3) : (3 + Math.random() * 3);
+
+                    const enemy = new Ninja(this.ctx, speedEnemy, directionEnemyRandom);
+                    enemy.groundTo(this.canvas.height - GROUND_Y);
+                    this.enemies.push(enemy);
+
+                }, SP_ENEMY_SPAWN_INTERVAL);
+
+                console.info('Enemies Level 2');
+                break;
+            case 3:
+                console.info('Enemies Level 3');
+                break;
+            case 4:
+                console.info('Enemies Level 4');
+                break;
+        }
     }
 
     checkLevel() {
-        
-
         if (this.background.isFadeTransition) {
 
             const timeNow = Date.now();
@@ -66,13 +90,18 @@ class Game {
 
             if (this.background.fadeTransitionState === 'fadeOut') {
                 if (elapsed >= TRANSITION_FADE_DURATION) {
-                    this.background.setLevel(this.transitionTargetLevel);
+                    this.background.setLevel(this.transitionNextLevel);
+
                     this.background.fadeTransitionState = 'pause';
+
                     this.transitionStart = Date.now();
                 }
             } else if (this.background.fadeTransitionState === 'pause') {
-                if (elapsed >= TRANSITION_FADE_DURATION) {
+                if (elapsed >= TRANSITION_PAUSE_DURATION) {
                     this.background.fadeTransitionState = 'fadeIn';
+
+                    this.indianaJones.x = (this.canvas.width - this.indianaJones.w) / 2;
+
                     this.transitionStart = Date.now();
                 }
             } else if (this.background.fadeTransitionState === 'fadeIn') {
@@ -83,40 +112,24 @@ class Game {
 
                     this.background.isFadeTransition = false;
 
-                    this.transitionTargetLevel = null;
-
-                    this.indianaJones.x = (this.canvas.width - this.indianaJones.w) / 2;
                     this.indianaJones.levelEnd = false;
+
+                    this.transitionNextLevel = null;
                 }
             }
-
             return;
 
-
-
-
-
-
-            // if (timeNow - this.background.fadeTimeTransition > TRANSITION_FADE_DURATION) {
-            //     console.log('Transicion realizada y cargando level');
-            //     this.enemies = [];
-                
-            //     this.levelStartTime = Date.now();
-
-            //     this.background.isFadeTransition = false;
-            //     this.background.fadeTransitionState = 'fade';
-
-            //     const nextBackgroundLevel = this.background.currentLevel+=1;
-            //     this.background.setLevel(nextBackgroundLevel);
-
-            //     this.indianaJones.x = (this.canvas.width - this.indianaJones.w) / 2;
-            //     this.indianaJones.levelEnd = false;
-            // }
         } else {
             const timeNow = Date.now();
 
             if (timeNow - this.levelStartTime > LEVEL_DURATION && this.indianaJones.lifeIndi > 0) {
                 this.nextLevel();
+            }
+
+            if (this.background.currentLevel != this.currentLoadedLevel) {
+                this.currentLoadedLevel = this.background.currentLevel;
+
+                this.showEnemiesRandom();
             }
         }
         
@@ -126,18 +139,17 @@ class Game {
     nextLevel() {
         if (this.background.isFadeTransition) return;
         
-        this.background.fadeOpacity = 0;
         this.background.isFadeTransition = true;
         
         const nextBackgroundLevel = this.background.currentLevel+=1;
-        this.transitionTargetLevel = nextBackgroundLevel;
+        this.transitionNextLevel = nextBackgroundLevel;
 
         this.background.fadeTransitionState = 'fadeOut';
         this.transitionStart = Date.now();
 
         this.indianaJones.levelEnd = true;
 
-        console.log('Current Level: ', this.background.currentLevel);
+        console.info('Finish Level ', this.background.currentLevel);
     }
 
     setupListeners() {
@@ -150,7 +162,7 @@ class Game {
     }
 
     gameWin() {
-        if (this.indianaJones.lifeIndi > 0 && this.background.currentLevel > 2) {
+        if (this.indianaJones.lifeIndi > 0 && this.background.currentLevel > BG_MAIN.length - 1) {
             this.stop();
             console.log('GAME WIN!!');
         }
@@ -170,16 +182,12 @@ class Game {
     }
 
     draw() {
-        
         this.background.draw();
         
-        if (this.background.isFadeTransition) {
-            this.indianaJones.draw();
-            return;
-        } else {
+        if (!this.background.isFadeTransition) {   
             this.enemies.forEach((enemy) => enemy.draw());
         }
-            
+                
         this.indianaJones.draw();
     }
 }

@@ -21,12 +21,12 @@ class Background {
         this.fadeTimeTransition = 0;
 
         this.fadeOpacity = 0;
-        this.fadeAmount = 0.01;
+        this.fadeAmount = 0.02;
     }
 
     loadNextPlatform() {
         this.sprite = new Image();
-        this.sprite.src = this.backgrounds[this.currentLevel]; //|| this.backgrounds[0];
+        this.sprite.src = this.backgrounds[this.currentLevel] || this.backgrounds[0];
         this.sprite.onload = () => {
             this.sprite.isReady = true;
         };
@@ -44,18 +44,11 @@ class Background {
             this.ctx.fillStyle = "black";
             this.ctx.fillRect(this.x, this.y, this.w, this.h);
 
-            //this.fadeOpacity -=  this.fadeAmount;
-            this.fadeOpacity += this.fadeAmount;
-
-            // if (this.fadeOpacity < 0) {
-            //     this.fadeOpacity = 1;
-            //     //this.fadeTransitionState = 'pause';
-            // }
+            this.fadeOpacity += this.fadeAmount;            
 
             console.log('fadeOut');
         } else if (this.fadeTransitionState == 'pause') {
             this.ctx.globalAlpha = 1;
-            //this.fadeOpacity = 1;
             this.ctx.fillStyle = "black";
             this.ctx.fillRect(this.x, this.y, this.w, this.h);
 
