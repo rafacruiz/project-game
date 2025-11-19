@@ -2,6 +2,8 @@ class Rat extends Enemy {
 
     constructor (ctx, vx, config, x, y) {
         super(ctx, vx, config, x, y);
+
+        this.damage = 1.5;
     }
 
     animate() {       

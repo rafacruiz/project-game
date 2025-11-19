@@ -17,10 +17,13 @@ class Game {
 
         this.levelLifePlayer = 100;
         this.levelStartTime = Date.now();
+
         this.transitionNextLevel = null;
         this.transitionStart = 0;
                         
         this.enemies = [];
+
+        this.floatingTexts = [];
 
         this.setupListeners();
 
@@ -37,6 +40,7 @@ class Game {
                 this.clear();
                 this.move();
                 this.checkLevel();
+                this.checkColisions();
                 this.draw();
             }, this.fps);
         }
@@ -127,12 +131,12 @@ class Game {
                     this.background.setLevel(this.transitionNextLevel);
 
                     this.background.fadeTransitionState = 'pause';
-
+                    
                     this.transitionStart = Date.now();
                 }
             } else if (this.background.fadeTransitionState === 'pause') {
                 if (elapsed >= TRANSITION_PAUSE_DURATION) {
-                    this.background.fadeTransitionState = 'fadeIn';
+                    this.background.fadeTransitionState = 'fadeIn';                  
 
                     this.indianaJones.x = (this.canvas.width - this.indianaJones.w) / 2;
 
@@ -156,7 +160,7 @@ class Game {
         } else {
             const timeNow = Date.now();
 
-            if (timeNow - this.levelStartTime > LEVEL_DURATION && this.indianaJones.lifeIndi > 0) {
+            if (timeNow - this.levelStartTime > LEVEL_DURATION && this.indianaJones.indiLife > 0) {
                 this.nextLevel();
             }
 
@@ -168,22 +172,24 @@ class Game {
         }
         
         this.gameWin();
+        this.gameOver();
     }
 
     nextLevel() {
         if (this.background.isFadeTransition) return;
-        
-        this.background.isFadeTransition = true;
-        
+               
         const nextBackgroundLevel = this.background.currentLevel+=1;
         this.transitionNextLevel = nextBackgroundLevel;
-
-        this.background.fadeTransitionState = 'fadeOut';
         this.transitionStart = Date.now();
+
+        this.background.isFadeTransition = true;
+        this.background.fadeTransitionState = 'fadeOut';
+        this.background.isCountDown = true;
+        this.background.countDown();
 
         this.indianaJones.levelEnd = true;
 
-        console.info('Finish Level ', this.background.currentLevel);
+        console.info('Finish Level: ', this.background.currentLevel);
     }
 
     setupListeners() {
@@ -191,28 +197,70 @@ class Game {
         addEventListener('keyup', (event) => this.indianaJones.onKeypress(event));
     }
 
-    checkColisions() {
+    checkLimit() {
+        if (this.indianaJones.x <= 0) {
+            this.indianaJones.x = 0;
+        } else if (this.indianaJones.x + this.indianaJones.w > this.canvas.width) {
+            this.indianaJones.x = this.canvas.width - this.indianaJones.w;
+        }
+    }
 
+    checkColisions() {
+        for(const enemy of this.enemies) {
+            if (this.indianaJones.collidesWith(enemy) 
+                && !this.background.isFadeTransition
+                && ! enemy.isUsed) {
+
+                this.indianaJones.indiLife -= enemy.damage;
+
+                if (this.indianaJones.indiLife < 0) this.indianaJones.indiLife = 0;
+
+                enemy.isUsed = true;
+
+                this.floatingTexts.push(new FloatingDamage(this.ctx, "-" + enemy.damage, 
+                                        this.indianaJones.x, 
+                                        this.indianaJones.y));
+
+                console.log('Health player: ', this.indianaJones.indiLife);
+            }
+        }
     }
 
     gameWin() {
-        if (this.indianaJones.lifeIndi > 0 && this.background.currentLevel > BG_MAIN.length - 1) {
+        if (this.indianaJones.indiLife > 0 && this.background.currentLevel > BG_MAIN.length - 1) {
             this.stop();
-            console.log('GAME WIN!!');
+            console.log('YOUR WIN!!');
+        }
+    }
+
+    gameOver() {
+        if (this.indianaJones.indiLife <= 0) {
+            if (this.indianaJones.indiGameOver) {
+                this.stop();
+                console.log('GAME OVER!!')
+            }
         }
     }
 
     clear() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
         this.enemies = this.enemies.filter(enemy => {
             return (enemy.vx < 0 && enemy.x + enemy.w > 0) ||
             (enemy.vx > 0 && enemy.x < this.canvas.width)
+        });
+
+        this.floatingTexts = this.floatingTexts.filter(text => {
+            text.update();
+            return !text.isDead();
         });
     }
 
     move() {
         this.enemies.forEach((enemy) => enemy.move());
         this.indianaJones.move();
+
+        this.checkLimit();
     }
 
     draw() {
@@ -221,6 +269,8 @@ class Game {
         if (!this.background.isFadeTransition) {   
             this.enemies.forEach((enemy) => enemy.draw());
         }
+
+        this.floatingTexts.forEach((text) => text.draw());
                 
         this.indianaJones.draw();
     }

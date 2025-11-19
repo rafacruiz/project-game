@@ -16,6 +16,10 @@ class Background {
 
         this.loadNextPlatform();
 
+        this.isCountDown = false;
+        this.countdownTimer = 0;
+        this.countdown = 0;
+
         this.isFadeTransition = false;
         this.fadeTransitionState = 'playing'; // 'playing' | 'fade'
         this.fadeTimeTransition = 0;
@@ -37,6 +41,34 @@ class Background {
         this.loadNextPlatform();
     }
 
+    countDown() {
+        this.countdown = 8;
+
+        this.countdownTimer = setInterval(() => {
+            
+            this.countdown--;
+            
+            if (this.countdown === 0) {
+                clearInterval(this.countdownTimer);
+                this.isCountDown = false;
+            }
+
+            console.log(this.countdown);
+        }, 1000);
+    }
+
+    drawCountDown() {
+        this.ctx.save();
+        this.ctx.globalAlpha = 1; // revisar
+        this.ctx.font = "40px Arial";
+        this.ctx.fillStyle = "white";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(this.countdown, 
+            this.ctx.canvas.width / 2, 
+            this.ctx.canvas.height / 2);
+        this.ctx.restore();
+    }
+
     transitionFade() {
         if (this.fadeTransitionState == 'fadeOut') {
             
@@ -48,7 +80,7 @@ class Background {
 
             console.log('fadeOut');
         } else if (this.fadeTransitionState == 'pause') {
-            this.ctx.globalAlpha = 1;
+            this.ctx.globalAlpha = 1;            
             this.ctx.fillStyle = "black";
             this.ctx.fillRect(this.x, this.y, this.w, this.h);
 
@@ -83,6 +115,10 @@ class Background {
         
         if (this.isFadeTransition) {
             this.transitionFade();
+        }
+
+        if (this.isCountDown) {
+            this.drawCountDown();
         }
     }
 }

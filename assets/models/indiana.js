@@ -4,8 +4,8 @@ class Indianajones {
         this.ctx = ctx;
         this.x = x;
         this.y = y;
-        this.h = 80;
-        this.w = 70;
+        this.h = INDI_HEIGHT;
+        this.w = INDI_WIDTH;
 
         this.vx = 0;
         this.vy = 0;
@@ -16,7 +16,7 @@ class Indianajones {
         this.sprite = new Image();
         this.sprite.src = SP_INDI;
         this.sprite.framesV = 9; // Cantidad de sprite en la imagen
-        this.sprite.framesH = 4;
+        this.sprite.framesH = 9;
         this.sprite.frameIndexV = 0; // indice para eligir el sprite
         this.sprite.frameIndexH = 0;
         this.sprite.onload = () => {
@@ -27,13 +27,16 @@ class Indianajones {
             //this.h = this.sprite.Hframe; // Asignamos la media del sprite al objeto
         }
 
-        this.isJumping = false;
+        this.indiIsJumping = false;
+        this.indiIsDown = false;
+        this.indiIsShoot = false;
+        this.indiDirection = 'right';
+        this.indiLife = 100;
+        this.indiGameOver = false;
 
         this.levelEnd = false;
 
         this.drawCount = 0;
-
-        this.lifeIndi = 100;
     }
 
     groundTo(groundY) {
@@ -44,27 +47,54 @@ class Indianajones {
     onKeypress(event) {
         const isPressButton = event.type === 'keydown';
         this.levelEnd = false;
-
+        
         switch (event.keyCode) {
             case KEY_LEFT:
                 if (isPressButton) {
-                    this.vx = -INDI_VX;
+                        this.vx = -INDI_VX;
+                        this.indiDirection = 'left';
                 } else {
                     this.vx = 0;
                 }
                 break;
             case KEY_RIGTH:
                 if (isPressButton) {
-                    this.vx = INDI_VX;
+                        this.vx = INDI_VX;
+                        this.indiDirection = 'right';
                 } else {
                     this.vx = 0;
                 }
                 break;
             case KEY_UP:
-                if (!this.isJumping) {
-                    this.isJumping = true;
+                if (!this.indiIsJumping) {
+                    this.indiIsJumping = true;
                     this.vy = -INDI_VY;
                     this.ay = INDI_AY;
+                }
+                break;
+            case KEY_DOWN:
+                if (isPressButton) {
+                    if (!this.indiIsDown && !this.indiIsJumping) {
+                        this.indiIsDown = true;
+                        const toCrouch = INDI_HEIGHT * 0.90;
+                        this.y += this.h - toCrouch;
+                        this.h = toCrouch;
+                        this.ground = this.y;
+                    }
+                } else {
+                    this.indiIsDown = false;
+                    this.y -= INDI_HEIGHT - this.h;
+                    this.h = INDI_HEIGHT;
+                    this.ground = this.y;
+                }
+                break;
+            case KEY_SHOOT:
+                if (isPressButton) {
+                    if (!this.indiIsShoot) {
+                        this.indiIsShoot = true;
+                    }
+                } else {
+                    this.indiIsShoot = false;
                 }
                 break;
         }
@@ -77,7 +107,7 @@ class Indianajones {
         this.y += this.vy;
 
         if (this.y > this.ground) {
-            this.isJumping = false;
+            this.indiIsJumping = false;
             this.vy = 0;
             this.ay = 0
             this.y = this.ground;
@@ -105,16 +135,35 @@ class Indianajones {
     }
 
     animate() {
-        if (this.isJumping) {
-            this.sprite.frameIndexH = 1;
+        if (this.indiIsJumping) {
+            //this.sprite.frameIndexH = 8;
+            //this.sprite.frameIndexV = 0;
+            this.animateFrames(5, 1, 2, 18);
+        } else if (this.indiIsDown) {
+            this.sprite.frameIndexH = 5;
             this.sprite.frameIndexV = 0;
         } else if (this.vx !== 0) {
-            this.animateFrames(3, 0, 4, 5);
+            if (this.indiDirection === 'right') this.animateFrames(3, 0, 9, 5)
+            else this.animateFrames(4, 0, 9, 5);
         } else if (this.levelEnd) {
-            this.animateFrames(2, 1, 5, 17);
+            this.animateFrames(1, 0, 5, 17);
+        } else if (this.indiIsShoot) {
+            if (this.indiDirection === 'right') {
+                this.sprite.frameIndexH = 6;
+                this.sprite.frameIndexV = 3;
+            } else {
+                this.sprite.frameIndexH = 7;
+                this.sprite.frameIndexV = 0;
+            }
+                //this.animateFrames(6, 0, 4, 5)
+                //this.animateFrames(7, 0, 4, 5);
+        } else if (this.indiLife <= 0) {
+            this.animateFrames(8, 0, 5, 12);
+            this.indiGameOver = true;
         } else {
-            this.sprite.frameIndexH = 0;
-            this.sprite.frameIndexV = 0;
+            //this.sprite.frameIndexH = 0;
+            //this.sprite.frameIndexV = 0;
+            this.animateFrames(0, 0, 3, 45);
         }
     }
 

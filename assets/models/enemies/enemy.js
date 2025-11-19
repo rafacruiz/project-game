@@ -8,6 +8,9 @@ class Enemy {
         this.w = config.w ?? 70;
 
         this.vx = vx;
+
+        this.damage = 1;
+        this.isUsed = false;
     
         this.ground = 0;
 

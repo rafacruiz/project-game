@@ -15,7 +15,7 @@ const BG_MAIN = ['/assets/images/bgs/backg1.png',
                 '/assets/images/bgs/backg2.png',
                 '/assets/images/bgs/backg4.png',];
 
-const BG_VX = 5;
+const BG_VX = 5; // Comprobar
 
 const SP_ENEMY_SPAWN_INTERVAL = 1500;
 const SP_ENEMY_NINJA_RIGTH  = '/assets/images/sprites/enemies/enemy-ninja-right.png';
@@ -31,12 +31,16 @@ const SP_ENEMIES_LEVEL2 = [
                 { src: SP_ENEMY_BAT, w: 30, h: 30, framesV: 3, framesH: 1, direction: CANVAS_W + 5 },
                 { src: SP_ENEMY_RAT, w: 30, h: 25, framesV: 4, framesH: 1, direction: CANVAS_W + 5 }];
 
-const SP_INDI = '/assets/images/sprites/indi_FIN.png';
+const SP_INDI = '/assets/images/sprites/prueba.png';
 
+const INDI_HEIGHT = 90;
+const INDI_WIDTH = 80;
 const INDI_VX = 4;
-const INDI_VY = 10;
+const INDI_VY = 12;
 const INDI_AY = 0.5;
 
 const KEY_RIGTH = 39; 
 const KEY_LEFT = 37;
 const KEY_UP = 38;
+const KEY_DOWN = 40;
+const KEY_SHOOT = 32;
