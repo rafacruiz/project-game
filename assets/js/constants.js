@@ -2,6 +2,9 @@
 const CANVAS_W = 800;
 const CANVAS_H = 600;
 
+const UI_COLOR_TEXT = "#f0a100";
+const UI_TYPE_TEXT = " Public Pixel";
+
 const FPS = 1000 / 60;
 
 const LEVEL_DURATION = 10000;
@@ -9,6 +12,8 @@ const TRANSITION_FADE_DURATION = 3000;
 const TRANSITION_PAUSE_DURATION = 3000;
 
 const GROUND_Y = 150;
+
+const UTIL_NUMBER = '/assets/images/utils/game-number.png';
 
 const BG_MAIN = ['/assets/images/bgs/backg1.png',
                 '/assets/images/bgs/backg3.png',

@@ -12,10 +12,12 @@ class Game {
                     
         this.background = new Background(this.ctx);
 
+        this.uiPlayer = new Ui(this.ctx);
+
         this.indianaJones = new Indianajones(this.ctx, 0, 0);
         this.indianaJones.groundTo(this.canvas.height - GROUND_Y);
 
-        this.levelLifePlayer = 100;
+        this.levelLifePlayer = 100; // Mirar si esta en uso
         this.levelStartTime = Date.now();
 
         this.transitionNextLevel = null;
@@ -35,13 +37,15 @@ class Game {
 
     start() {
         if (!this.drawIntervalId) {
-            console.log('Inicio Game'); 
+            console.log('Init Game');
+
             this.drawIntervalId = setInterval(() => {
                 this.clear();
                 this.move();
                 this.checkLevel();
                 this.checkColisions();
                 this.draw();
+                this.uiPlayer.drawHUD(this.background.currentLevel + 1, this.levelStartTime, this.indianaJones.indiLife);
             }, this.fps);
         }
     }
@@ -159,7 +163,7 @@ class Game {
 
         } else {
             const timeNow = Date.now();
-
+            
             if (timeNow - this.levelStartTime > LEVEL_DURATION && this.indianaJones.indiLife > 0) {
                 this.nextLevel();
             }
@@ -184,9 +188,7 @@ class Game {
 
         this.background.isFadeTransition = true;
         this.background.fadeTransitionState = 'fadeOut';
-        this.background.isCountDown = true;
-        this.background.countDown();
-
+           
         this.indianaJones.levelEnd = true;
 
         console.info('Finish Level: ', this.background.currentLevel);

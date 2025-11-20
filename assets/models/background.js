@@ -16,10 +16,8 @@ class Background {
 
         this.loadNextPlatform();
 
-        this.isCountDown = false;
-        this.countdownTimer = 0;
-        this.countdown = 0;
-
+        this.countDown = new Ui(this.ctx);
+        
         this.isFadeTransition = false;
         this.fadeTransitionState = 'playing'; // 'playing' | 'fade'
         this.fadeTimeTransition = 0;
@@ -41,51 +39,26 @@ class Background {
         this.loadNextPlatform();
     }
 
-    countDown() {
-        this.countdown = 8;
-
-        this.countdownTimer = setInterval(() => {
-            
-            this.countdown--;
-            
-            if (this.countdown === 0) {
-                clearInterval(this.countdownTimer);
-                this.isCountDown = false;
-            }
-
-            console.log(this.countdown);
-        }, 1000);
-    }
-
-    drawCountDown() {
-        this.ctx.save();
-        this.ctx.globalAlpha = 1; // revisar
-        this.ctx.font = "40px Arial";
-        this.ctx.fillStyle = "white";
-        this.ctx.textAlign = "center";
-        this.ctx.fillText(this.countdown, 
-            this.ctx.canvas.width / 2, 
-            this.ctx.canvas.height / 2);
-        this.ctx.restore();
-    }
-
     transitionFade() {
-        if (this.fadeTransitionState == 'fadeOut') {
-            
+        if (this.fadeTransitionState === 'fadeOut') {
             this.ctx.globalAlpha = this.fadeOpacity;
             this.ctx.fillStyle = "black";
             this.ctx.fillRect(this.x, this.y, this.w, this.h);
 
-            this.fadeOpacity += this.fadeAmount;            
+            this.fadeOpacity += this.fadeAmount;
+
+            this.countDown.setNumber(10);
+            this.countDown.countdownTimer = Date.now();
+            this.countDown.isCountDown = true;
 
             console.log('fadeOut');
-        } else if (this.fadeTransitionState == 'pause') {
+        } else if (this.fadeTransitionState === 'pause') {
             this.ctx.globalAlpha = 1;            
             this.ctx.fillStyle = "black";
             this.ctx.fillRect(this.x, this.y, this.w, this.h);
 
             console.log('Total black');
-        } else if (this.fadeTransitionState == 'fadeIn') {
+        } else if (this.fadeTransitionState === 'fadeIn') {
             this.ctx.globalAlpha = this.fadeOpacity;
             this.ctx.fillStyle = "black";
             this.ctx.fillRect(0, 0, this.w, this.h);
@@ -117,8 +90,9 @@ class Background {
             this.transitionFade();
         }
 
-        if (this.isCountDown) {
-            this.drawCountDown();
+        if (this.countDown.isCountDown) {
+            this.countDown.drawCountDown();
+            this.countDown.update();
         }
     }
 }

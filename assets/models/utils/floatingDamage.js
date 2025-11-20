@@ -19,8 +19,8 @@ class FloatingDamage {
     draw() {
         this.ctx.save();
         this.ctx.globalAlpha = this.alpha;
-        this.ctx.font = "20px PixelFont";
-        this.ctx.fillStyle = "red";
+        this.ctx.font = "10px" + UI_TYPE_TEXT;
+        this.ctx.fillStyle = UI_COLOR_TEXT;
         this.ctx.fillText(this.text, this.x, this.y);
         this.ctx.restore();
     }
