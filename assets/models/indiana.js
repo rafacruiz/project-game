@@ -69,6 +69,7 @@ class Indianajones {
                 if (isPressButton) {
                     if (!this.indiIsJumping && !this.indiIsDown) {
                         this.indiIsJumping = true;
+
                         this.vy = -INDI_VY;
                         this.ay = INDI_AY;
                     }
@@ -78,23 +79,44 @@ class Indianajones {
                 if (isPressButton) {
                     if (!this.indiIsDown && !this.indiIsJumping) {
                         this.indiIsDown = true;
-                        const toCrouch = INDI_HEIGHT * 0.90;
+
+                        const toCrouch = INDI_HEIGHT * 0.60;
+
                         this.y += this.h - toCrouch;
                         this.h = toCrouch;
+
                         this.ground = this.y;
                     }
                 } else {
-                    this.indiIsDown = false;
-                    this.y -= INDI_HEIGHT - this.h;
-                    this.h = INDI_HEIGHT;
-                    this.ground = this.y;
+                    if (this.indiIsDown && !this.indiIsJumping) {
+                        this.indiIsDown = false;
+
+                        this.y -= INDI_HEIGHT - this.h;
+                        this.h = INDI_HEIGHT;
+
+                        this.ground = this.y;
+                    }
                 }
                 break;
             case KEY_SHOOT:
                 if (isPressButton) {
                     if (!this.indiIsShoot && !this.indiIsJumping && !this.indiIsDown) {
                         this.indiIsShoot = true;
-                        this.bullets.push(new Bullet(this.ctx, this.x + this.w + 3, this.y + (this.h / 3)));
+
+                        let bulletX = 0;
+                        let bulletVx = 0;
+
+                        if (this.indiDirection === 'right') {
+                            bulletX = this.x + this.w + 3;
+                            bulletVx = 3;
+                        } else {
+                            bulletX = this.x - 10;
+                            bulletVx = -3;
+                        }
+
+                        this.bullets.push(
+                            new Bullet(this.ctx, bulletX, this.y + this.h / 3, 16, 10, bulletVx)
+                        );
                     }
                 } else {
                     this.indiIsShoot = false;

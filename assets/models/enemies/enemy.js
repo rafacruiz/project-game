@@ -11,6 +11,7 @@ class Enemy {
 
         this.damage = 1;
         this.isUsed = false;
+        this.isDead = false;
     
         this.ground = 0;
 

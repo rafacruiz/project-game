@@ -15,8 +15,12 @@ const TRANSITION_PAUSE_DURATION = 3000;
 
 const UTIL_NUMBER = '/assets/images/utils/game-number.png';
 
-const BG_MAIN = ['/assets/images/bgs/backg1.png',
+/*const BG_MAIN = ['/assets/images/bgs/backg1.png',
                 '/assets/images/bgs/backg3.png',
+                '/assets/images/bgs/backg2.png',
+                '/assets/images/bgs/backg4.png',];*/
+
+const BG_MAIN = ['/assets/images/bgs/backg1.png',
                 '/assets/images/bgs/backg2.png',
                 '/assets/images/bgs/backg4.png',];
 

@@ -61,13 +61,10 @@ class Game {
             clearInterval(this.enemyInterval);
         }
         
+        console.info('Enemies Level: ', this.background.currentLevel + 1);
+
         switch (this.background.currentLevel + 1) {
             case 1:
-                
-
-                console.info('Enemies Level 1');
-                break;
-            case 2:
                 this.enemyInterval = setInterval(() => {            
                     const directionEnemyRandom = SP_ENEMIES_LEVEL1[Math.floor(Math.random() 
                                                 * SP_ENEMIES_LEVEL1.length)];
@@ -81,11 +78,9 @@ class Game {
 
                     this.enemies.push(enemy);
 
-                }, SP_ENEMY_SPAWN_INTERVAL);
-                
-                console.info('Enemies Level 2');
+                }, SP_ENEMY_SPAWN_INTERVAL);                
                 break;
-            case 3:
+            case 2:
                 this.enemyInterval = setInterval(() => {
                     const indexEnemy = Math.floor(Math.random() 
                                         * SP_ENEMIES_LEVEL2.length);
@@ -100,7 +95,9 @@ class Game {
                     switch (indexEnemy) {
                         case 0:
                             heightEnemy = (this.canvas.height - GROUND_Y) 
-                                            - (6 + Math.random() * 70);
+                                            - (8 + Math.random() * 70);
+                            
+                            console.log('Altura pajaro: ', heightEnemy);
                     
                             enemy = new Bat(this.ctx, speedEnemy, enemyRandom);
                             enemy.groundTo(heightEnemy);
@@ -115,10 +112,8 @@ class Game {
                     
                     this.enemies.push(enemy);
                 }, 700);
-
-                console.info('Enemies Level 3');
                 break;
-            case 4:
+            case 3:
                 this.enemyInterval = setInterval(() => {
 
                     const speedEnemy =  -(3 + Math.random() * 2);
@@ -128,8 +123,6 @@ class Game {
 
                     this.enemies.push(enemy);
                 }, 700);
-
-                console.info('Enemies Level 4');
                 break;
         }
     }
@@ -224,6 +217,7 @@ class Game {
                 if (bullet.collidesWith(enemy) && !bullet.isUsed) {
                     enemy.isDead = true;
                     bullet.isUsed = true;
+                    console.log('colision');
                 }
             }
         }
@@ -231,7 +225,7 @@ class Game {
         for(const enemy of this.enemies) {
             if (this.indianaJones.collidesWith(enemy) 
                 && !this.background.isFadeTransition
-                && ! enemy.isUsed) {
+                && !enemy.isUsed) {
 
                 this.indianaJones.indiLife -= enemy.damage;
 
@@ -268,8 +262,9 @@ class Game {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
         this.enemies = this.enemies.filter(enemy => {
-            return (enemy.vx < 0 && enemy.x + enemy.w > 0) ||
-            (enemy.vx > 0 && enemy.x < this.canvas.width)
+            return !enemy.isDead && 
+            ((enemy.vx < 0 && enemy.x + enemy.w > 0) ||
+            (enemy.vx > 0 && enemy.x < this.canvas.width));
         });
 
         this.floatingTexts = this.floatingTexts.filter(text => {
@@ -282,6 +277,7 @@ class Game {
 
     move() {
         this.enemies.forEach((enemy) => enemy.move());
+        
         this.indianaJones.move();
 
         this.checkLimit();
