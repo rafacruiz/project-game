@@ -17,7 +17,7 @@ jobs:
           node-version: 22
       
       - name: Install netlify CLI
-        run: npm Install -g netlify-cli
+        run: npm install -g netlify-cli
 
       - name: Netlify Deploy
         run: netlify deploy --prod
