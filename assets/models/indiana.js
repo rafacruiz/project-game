@@ -66,10 +66,12 @@ class Indianajones {
                 }
                 break;
             case KEY_UP:
-                if (!this.indiIsJumping) {
-                    this.indiIsJumping = true;
-                    this.vy = -INDI_VY;
-                    this.ay = INDI_AY;
+                if (isPressButton) {
+                    if (!this.indiIsJumping && !this.indiIsDown) {
+                        this.indiIsJumping = true;
+                        this.vy = -INDI_VY;
+                        this.ay = INDI_AY;
+                    }
                 }
                 break;
             case KEY_DOWN:
@@ -90,7 +92,7 @@ class Indianajones {
                 break;
             case KEY_SHOOT:
                 if (isPressButton) {
-                    if (!this.indiIsShoot) {
+                    if (!this.indiIsShoot && !this.indiIsJumping && !this.indiIsDown) {
                         this.indiIsShoot = true;
                         this.bullets.push(new Bullet(this.ctx, this.x + this.w + 3, this.y + (this.h / 3)));
                     }
