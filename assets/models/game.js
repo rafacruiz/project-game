@@ -218,6 +218,16 @@ class Game {
     }
 
     checkColisions() {
+
+        for (const enemy of this.enemies) {
+            for (const bullet of this.indianaJones.bullets) {
+                if (bullet.collidesWith(enemy) && !bullet.isUsed) {
+                    enemy.isDead = true;
+                    bullet.isUsed = true;
+                }
+            }
+        }
+
         for(const enemy of this.enemies) {
             if (this.indianaJones.collidesWith(enemy) 
                 && !this.background.isFadeTransition
