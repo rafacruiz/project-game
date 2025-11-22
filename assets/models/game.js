@@ -100,7 +100,7 @@ class Game {
                     switch (indexEnemy) {
                         case 0:
                             heightEnemy = (this.canvas.height - GROUND_Y) 
-                                            - (5 + Math.random() * 70);
+                                            - (6 + Math.random() * 70);
                     
                             enemy = new Bat(this.ctx, speedEnemy, enemyRandom);
                             enemy.groundTo(heightEnemy);
@@ -119,6 +119,16 @@ class Game {
                 console.info('Enemies Level 3');
                 break;
             case 4:
+                this.enemyInterval = setInterval(() => {
+
+                    const speedEnemy =  -(3 + Math.random() * 2);
+                    
+                    const enemy = new Skeleton(this.ctx, speedEnemy, SP_ENEMIES_LEVEL4[0]);
+                    enemy.groundTo(this.canvas.height - GROUND_Y);
+
+                    this.enemies.push(enemy);
+                }, 700);
+
                 console.info('Enemies Level 4');
                 break;
         }
@@ -256,6 +266,8 @@ class Game {
             text.update();
             return !text.isDead();
         });
+
+        this.indianaJones.clear();
     }
 
     move() {

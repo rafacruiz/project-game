@@ -1,18 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
+        <link href="https://fonts.cdnfonts.com/css/public-pixel" rel="stylesheet">
 
-    <title>Game - Project</title>
-</head>
-<body>
-    
-    <canvas id="main-game" width="800" height="600"> </canvas>
+        <link rel="stylesheet" href="/assets/css/styles.css">
 
-</body>
+        <title>Game - Project</title>
+    </head>
+    <body>
+
+        <div id="gameContainer">
+
+            <div id="mainMenu" class="screen active">
+                <img src="/assets/images/utils/game-title.png" alt="">
+                <button class="pixel-btn" onclick="startGame()">Jugar</button>
+                <button class="pixel-btn" onclick="showInstrucions()">Instrucciones</button>
+            </div>
+
+            <div id="instructions" class="screen">
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Muévete con las flechas</li>
+                    <li>Dispara con espacio.</li>
+                    <li>Evita trampas y enemigos</li>
+                    <li>Llega hasta el final</li>
+                </ul>
+                <button class="pixel-btn" onclick="showMenu()">Atrás</button>
+            </div>
+
+            <div id="gameScreen" class="screen">
+                <canvas id="main-game" width="800" height="600"> </canvas>
+            </div>
+
+        </div>
+        
+    </body>
 
     <script src="/assets/js/constants.js"></script>
     
@@ -21,10 +46,13 @@
 
     <script src="/assets/models/background.js"></script>
 
+    <script src="/assets/models/weapons/bullet.js"></script>
+
     <script src="/assets/models/enemies/enemy.js"></script>
     <script src="/assets/models/enemies/ninja.js"></script>
     <script src="/assets/models/enemies/bat.js"></script>
     <script src="/assets/models/enemies/rat.js"></script>
+    <script src="/assets/models/enemies/skeleton.js"></script>
 
     <script src="/assets/models/indiana.js"></script>
     

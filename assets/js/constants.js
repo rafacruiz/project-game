@@ -2,6 +2,8 @@
 const CANVAS_W = 800;
 const CANVAS_H = 600;
 
+const GROUND_Y = 150;
+
 const UI_COLOR_TEXT = "#f0a100";
 const UI_TYPE_TEXT = " Public Pixel";
 
@@ -10,8 +12,6 @@ const FPS = 1000 / 60;
 const LEVEL_DURATION = 10000;
 const TRANSITION_FADE_DURATION = 3000;
 const TRANSITION_PAUSE_DURATION = 3000;
-
-const GROUND_Y = 150;
 
 const UTIL_NUMBER = '/assets/images/utils/game-number.png';
 
@@ -27,16 +27,20 @@ const SP_ENEMY_NINJA_RIGTH  = '/assets/images/sprites/enemies/enemy-ninja-right.
 const SP_ENEMY_NINJA_LEFT   = '/assets/images/sprites/enemies/enemy-ninja-left.png';
 const SP_ENEMY_BAT          = '/assets/images/sprites/enemies/enemy-bat.png';
 const SP_ENEMY_RAT          = '/assets/images/sprites/enemies/enemy-rat.png';
+const SP_ENEMY_SQUELETON    = '/assets/images/sprites/enemies/enemy-squeleton.png';
 
 const SP_ENEMIES_LEVEL1 = [
                 { src: SP_ENEMY_NINJA_RIGTH, w: 70, h: 80, framesV: 4, framesH: 1, direction: CANVAS_W + 5 },
-                { src: SP_ENEMY_NINJA_LEFT, w: 70, h: 80, framesV: 9, framesH: 1, direction: -5 }];
+                { src: SP_ENEMY_NINJA_LEFT, w: 80, h: 80, framesV: 8, framesH: 1, direction: -5 }];
 
 const SP_ENEMIES_LEVEL2 = [
                 { src: SP_ENEMY_BAT, w: 30, h: 30, framesV: 3, framesH: 1, direction: CANVAS_W + 5 },
                 { src: SP_ENEMY_RAT, w: 30, h: 25, framesV: 4, framesH: 1, direction: CANVAS_W + 5 }];
 
-const SP_INDI = '/assets/images/sprites/prueba.png';
+const SP_ENEMIES_LEVEL4 = [
+                {src: SP_ENEMY_SQUELETON, w: 85, h: 110, framesV: 3, framesH: 1, direction: CANVAS_W + 5}];
+
+const SP_INDI = '/assets/images/sprites/sp-indiana.png';
 
 const INDI_HEIGHT = 90;
 const INDI_WIDTH = 80;

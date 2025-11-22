@@ -23,8 +23,6 @@ class Indianajones {
             this.sprite.isReady = true;
             this.sprite.Wframe = Math.floor(this.sprite.width / this.sprite.framesV); // medida un sprite
             this.sprite.Hframe = Math.floor(this.sprite.height / this.sprite.framesH);
-            //this.w = this.sprite.Wframe;
-            //this.h = this.sprite.Hframe; // Asignamos la media del sprite al objeto
         }
 
         this.indiIsJumping = false;
@@ -37,6 +35,8 @@ class Indianajones {
         this.levelEnd = false;
 
         this.drawCount = 0;
+
+        this.bullets = [];
     }
 
     groundTo(groundY) {
@@ -92,6 +92,7 @@ class Indianajones {
                 if (isPressButton) {
                     if (!this.indiIsShoot) {
                         this.indiIsShoot = true;
+                        this.bullets.push(new Bullet(this.ctx, this.x + this.w + 3, this.y + (this.h / 3)));
                     }
                 } else {
                     this.indiIsShoot = false;
@@ -112,6 +113,8 @@ class Indianajones {
             this.ay = 0
             this.y = this.ground;
         }
+
+        this.bullets.forEach((bullet) => bullet.move());
     }
 
     draw() {
@@ -131,6 +134,8 @@ class Indianajones {
 
             this.animate();
             this.drawCount++;
+
+            this.bullets.forEach((bullet) => bullet.draw());
         }
     }
 
@@ -184,5 +189,13 @@ class Indianajones {
             this.y < element.y + element.h &&
             this.y + this.h > element.y
         );
+    }
+
+    clear() {
+        this.bullets = this.bullets.filter(bullet => {
+            return !bullet.isUsed &&
+                bullet.x >= 0 &&
+                bullet.x + bullet.w < this.ctx.canvas.width
+        });
     }
 }

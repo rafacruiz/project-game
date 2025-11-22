@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    font-family: 'Public Pixel', sans-serif;
+    color: white;
+    overflow: hidden;
+}
+
+#gameContainer {
+    width: 800px;
+    height: 600px;
+    position: relative;
+    border: 8px solid #d4b484;
+}
+
+.screen {
+    width: 800px;
+    height: 600px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.screen img {
+    width: 280px;
+    height: 100px;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.pixel-btn {
+    padding: 12px 20px;
+    margin: 12px;
+    background: #7a5f41;
+    border: 4px solid #d4b484;
+    color: #fff;
+    cursor: pointer;
+}
+
+.pixel-btn:hover {
+    background: #9b7a52;
+    border-color: #ffe9b4;
+}
