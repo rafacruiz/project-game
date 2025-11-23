@@ -155,6 +155,8 @@ class Game {
                     this.enemies.push(enemy);
                 }, SP_ENEMY_SPAWN_INTERVAL_LEVEL2);
 
+                this.showPowerUpLife();
+
                 this.showEnemiesSteal();
                 break;
             case 3:
@@ -306,13 +308,12 @@ class Game {
 
                 this.floatingTexts.push(new FloatingDamage(this.ctx, "-" + enemy.damage, 
                                         this.indianaJones.x, 
-                                        this.indianaJones.y));
+                                        this.indianaJones.y,
+                                        enemy.damage));
 
                 console.log('Health player: ', this.indianaJones.indiLife);
             }
         }
-
-        console.log(this.enemies);
     }
 
     gameWin() {

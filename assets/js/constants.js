@@ -7,6 +7,10 @@ const GROUND_Y = 150;
 const UI_COLOR_TEXT = "#f0a100";
 const UI_TYPE_TEXT = " Public Pixel";
 
+const UI_COLOR_TEXT_LOW = "#f0a100";
+const UI_COLOR_TEXT_MEDIUM = "#f04c00ff"
+const UI_COLOR_TEXT_CRITICAL = "#f00000ff";
+
 const FPS = 1000 / 60;
 
 const LEVEL_DURATION = 10000 * 6;
