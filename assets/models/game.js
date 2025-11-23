@@ -13,6 +13,7 @@ class Game {
         this.background = new Background(this.ctx);
 
         this.uiPlayer = new Ui(this.ctx);
+        this.uiScore = new Uiscore(this.ctx, 410);
 
         this.indianaJones = new Indianajones(this.ctx, 0, 0);
         this.indianaJones.groundTo(this.canvas.height - GROUND_Y);
@@ -33,8 +34,9 @@ class Game {
 
         this.enemyInterval = undefined;
 
-        this.currentLoadedLevel = undefined;
+        this.lifeInterval = undefined;
 
+        this.currentLoadedLevel = undefined;
     }
 
     start() {
@@ -48,6 +50,7 @@ class Game {
                 this.checkColisions();
                 this.draw();
                 this.uiPlayer.drawHUD(this.background.currentLevel + 1, this.levelStartTime, this.indianaJones.indiLife);
+                this.uiScore.draw(this.indianaJones.indiBullets, this.indianaJones.indiWeaponGun);
             }, this.fps);
         }
     }
@@ -89,6 +92,8 @@ class Game {
     showEnemiesRandom() {
 
         if (this.enemyInterval) clearInterval(this.enemyInterval);
+
+        if (this.lifeInterval) clearInterval(this.lifeInterval);
     
         //if (this.background.isFadeTransition) return; REVISAR
 
@@ -112,10 +117,12 @@ class Game {
                 }, SP_ENEMY_SPAWN_INTERVAL_LEVEL1);
                 
                 this.showPowersUpGun();
+                
+                this.lifeInterval = setInterval(() => {
+                    this.showPowerUpLife();
 
-                this.showPowerUpLife();
-
-                this.showEnemiesSteal();
+                    this.showEnemiesSteal();
+                }, SP_POWER_UP_LEVEL1);
                 break;
             case 2:
                 this.enemyInterval = setInterval(() => {
@@ -161,9 +168,13 @@ class Game {
                     this.enemies.push(enemy);
                 }, SP_ENEMY_SPAWN_INTERVAL_LEVEL3);
 
-                this.showPowersUpGun();
+                this.lifeInterval = setInterval(() => {
+                    this.showPowersUpGun();
 
-                this.showEnemiesSteal();
+                    this.showPowerUpLife();
+
+                    this.showEnemiesSteal();
+                }, SP_POWER_UP_LEVEL3);
                 break;
         }
     }
@@ -273,10 +284,10 @@ class Game {
                         100,
                         this.indianaJones.indiLife + (power.life || 0)
                     );
+                } else if (power instanceof Gun) {
+                    this.indianaJones.indiWeaponGun = true;
+                    this.indianaJones.indiBullets = power.bullets;
                 }
-                
-                this.indianaJones.indiWeaponGun = true;
-                this.indianaJones.indiBullets = power.bullets;
             }
         }
 

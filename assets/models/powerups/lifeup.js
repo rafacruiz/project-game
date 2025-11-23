@@ -3,7 +3,9 @@ class Lifeup extends Powerup {
     constructor (ctx, config, x, y) {
         super(ctx, config, x, y);
 
-        this.life = INDI_LIFE_NEW;
+        this.life = NEW_LIFE_PLAYER;
+
+        this.duration = POWERUP_DURATION_LIFE;
     }
 
     animate() {       

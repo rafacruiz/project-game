@@ -4,10 +4,12 @@ class Ui {
         
         this.x = x;
         this.y = y;
+
+        this.index = 0;
     
         this.sprite = null;
 
-        this.spArray = UTIL_NUMBER;
+        this.spArray = UTILS_TOOLS;
 
         this.loadImage();
 
@@ -18,7 +20,7 @@ class Ui {
 
     loadImage() {
         this.sprite = new Image();
-        this.sprite.src = this.spArray;
+        this.sprite.src = this.spArray[this.index];
         this.sprite.framesV = 10;
         this.sprite.framesH = 1;
         this.sprite.frameIndexV = 0;
@@ -77,11 +79,16 @@ class Ui {
         return timeRemaining;
     }
 
+    scoreBullet() {
+        this.index = 1;
+        this.loadImage();
+    }
+
     drawHUD(levelGame, timeGame, lifePlayer) {
         this.ctx.font = "12px" + UI_TYPE_TEXT;
         this.ctx.fillStyle = UI_COLOR_TEXT;
         this.ctx.fillText("Level: " + levelGame, this.x, this.y);
         this.ctx.fillText("Life: " + Math.floor(lifePlayer), this.x + 120, this.y);
-        this.ctx.fillText("Time: " + this.timeGameRemain(timeGame), this.x + 240, this.y);
+        this.ctx.fillText("Time: " + this.timeGameRemain(timeGame).toFixed(2), this.x + 240, this.y);
     }
 }

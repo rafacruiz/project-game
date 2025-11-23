@@ -1,6 +1,6 @@
 class Bullet {
 
-    constructor(ctx, x, y, w = 16, h = 10, vx = 3) {
+    constructor(ctx, x, y, w = 16, h = 10, vx = 5) {
         this.ctx = ctx;
     
         this.x = x;

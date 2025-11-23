@@ -115,10 +115,10 @@ class Indianajones {
 
                             if (this.indiDirection === 'right') {
                                 bulletX = this.x + this.w + 3;
-                                bulletVx = 3;
+                                bulletVx = 6;
                             } else {
                                 bulletX = this.x - 10;
-                                bulletVx = -3;
+                                bulletVx = -6;
                             }
 
                             this.indiBullets--;

@@ -9,11 +9,12 @@ const UI_TYPE_TEXT = " Public Pixel";
 
 const FPS = 1000 / 60;
 
-const LEVEL_DURATION = 10000;
+const LEVEL_DURATION = 10000 * 6;
 const TRANSITION_FADE_DURATION = 3000;
 const TRANSITION_PAUSE_DURATION = 3000;
 
-const UTIL_NUMBER = '/assets/images/utils/game-number.png';
+const UTILS_TOOLS = ['/assets/images/utils/game-number.png',
+                    '/assets/images/utils/game-score-bullets.png'];
 
 const BG_MAIN = ['/assets/images/bgs/backg1.png',
                 '/assets/images/bgs/backg2.png',
@@ -47,6 +48,8 @@ const SP_ENEMIES_LEVEL3 = [
                 {src: SP_ENEMY_SQUELETON, w: 85, h: 110, framesV: 3, framesH: 1, direction: CANVAS_W + 5}];
 
 const POWERUP_DURATION = 5000;
+const POWERUP_DURATION_LIFE = 3500;
+const POWERUP_DURATION_GUN  = 5000;
 
 const SP_POWERUP_GUN        = '/assets/images/sprites/powerups/power-gun.png';
 const SP_POWERUP_LIFE       = '/assets/images/sprites/powerups/power-life.png';
@@ -56,7 +59,11 @@ const SP_POWERS_RANDOM = [
                 {src: SP_POWERUP_LIFE, w: 16, h: 16, framesV: 7, framesH: 1, direction: 0}];
 
 const INDI_BULLETS = 5;
-const INDI_LIFE_NEW = 5;
+
+const NEW_LIFE_PLAYER = 10;
+
+const SP_POWER_UP_LEVEL1 = 20000;
+const SP_POWER_UP_LEVEL3 = 10000;
 
 const SP_INDI = '/assets/images/sprites/sp-indiana.png';
 
