@@ -15,23 +15,25 @@ const TRANSITION_PAUSE_DURATION = 3000;
 
 const UTIL_NUMBER = '/assets/images/utils/game-number.png';
 
-/*const BG_MAIN = ['/assets/images/bgs/backg1.png',
-                '/assets/images/bgs/backg3.png',
-                '/assets/images/bgs/backg2.png',
-                '/assets/images/bgs/backg4.png',];*/
-
 const BG_MAIN = ['/assets/images/bgs/backg1.png',
                 '/assets/images/bgs/backg2.png',
                 '/assets/images/bgs/backg4.png',];
 
 const BG_VX = 5; // Comprobar
 
-const SP_ENEMY_SPAWN_INTERVAL = 1500;
+const SP_ENEMY_SPAWN_INTERVAL_LEVEL1 = 1500;
+const SP_ENEMY_SPAWN_INTERVAL_LEVEL2 = 700;
+const SP_ENEMY_SPAWN_INTERVAL_LEVEL3 = 700;
+
 const SP_ENEMY_NINJA_RIGTH  = '/assets/images/sprites/enemies/enemy-ninja-right.png';
 const SP_ENEMY_NINJA_LEFT   = '/assets/images/sprites/enemies/enemy-ninja-left.png';
 const SP_ENEMY_BAT          = '/assets/images/sprites/enemies/enemy-bat.png';
 const SP_ENEMY_RAT          = '/assets/images/sprites/enemies/enemy-rat.png';
 const SP_ENEMY_SQUELETON    = '/assets/images/sprites/enemies/enemy-squeleton.png';
+const SP_ENEMY_MONKEY       = '/assets/images/sprites/enemies/enemy-monkey.png';
+
+const SP_ENEMIES_RANDOM = [
+                {src: SP_ENEMY_MONKEY, w: 40, h: 40, framesV: 4, framesH: 1, direction: CANVAS_W + 5}];
 
 const SP_ENEMIES_LEVEL1 = [
                 { src: SP_ENEMY_NINJA_RIGTH, w: 70, h: 80, framesV: 4, framesH: 1, direction: CANVAS_W + 5 },
@@ -41,8 +43,20 @@ const SP_ENEMIES_LEVEL2 = [
                 { src: SP_ENEMY_BAT, w: 30, h: 30, framesV: 3, framesH: 1, direction: CANVAS_W + 5 },
                 { src: SP_ENEMY_RAT, w: 30, h: 25, framesV: 4, framesH: 1, direction: CANVAS_W + 5 }];
 
-const SP_ENEMIES_LEVEL4 = [
+const SP_ENEMIES_LEVEL3 = [
                 {src: SP_ENEMY_SQUELETON, w: 85, h: 110, framesV: 3, framesH: 1, direction: CANVAS_W + 5}];
+
+const POWERUP_DURATION = 5000;
+
+const SP_POWERUP_GUN        = '/assets/images/sprites/powerups/power-gun.png';
+const SP_POWERUP_LIFE       = '/assets/images/sprites/powerups/power-life.png';
+
+const SP_POWERS_RANDOM = [
+                {src: SP_POWERUP_GUN, w: 24, h: 24, framesV: 3, framesH: 1, direction: 0},
+                {src: SP_POWERUP_LIFE, w: 16, h: 16, framesV: 7, framesH: 1, direction: 0}];
+
+const INDI_BULLETS = 5;
+const INDI_LIFE_NEW = 5;
 
 const SP_INDI = '/assets/images/sprites/sp-indiana.png';
 

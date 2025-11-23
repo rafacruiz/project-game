@@ -12,14 +12,14 @@ class Bullet {
 
         this.sprite = new Image();
         this.sprite.src = '/assets/images/sprites/weapons/sprite-bullets.png';
-        this.sprite.vFrames = 1;
-        this.sprite.hFrames = 2;
-        this.sprite.vFrameIndex = 0;
-        this.sprite.hFrameIndex = 0;
+        this.sprite.framesV = 3;
+        this.sprite.framesH = 2;
+        this.sprite.frameIndexV = 0;
+        this.sprite.frameIndexH = 0;
         this.sprite.onload = () => {
             this.sprite.isReady = true;
-            this.sprite.frameW = Math.floor(this.sprite.width / this.sprite.vFrames);
-            this.sprite.frameH = Math.floor(this.sprite.height / this.sprite.hFrames);
+            this.sprite.Wframe = Math.floor(this.sprite.width / this.sprite.framesV);
+            this.sprite.Hframe = Math.floor(this.sprite.height / this.sprite.framesH);
         }
 
         this.drawCount = 0;
@@ -35,10 +35,10 @@ class Bullet {
 
             this.ctx.drawImage(
                 this.sprite,
-                this.sprite.vFrameIndex * this.sprite.frameW,
-                this.sprite.hFrameIndex * this.sprite.frameH,
-                this.sprite.frameW,
-                this.sprite.frameH,
+                this.sprite.frameIndexV * this.sprite.Wframe,
+                this.sprite.frameIndexH * this.sprite.Hframe,
+                this.sprite.Wframe,
+                this.sprite.Hframe,
                 this.x,
                 this.y,
                 this.w,
@@ -53,6 +53,12 @@ class Bullet {
     animate() {
         if (this.drawCount % 10 === 0) {
             this.drawCount = 0;
+            
+            if (this.vx < 0 ) {
+                this.sprite.frameIndexH = 1;
+                this.sprite.frameIndexV = 1;
+            }
+
             this.sprite.vFrameIndex = (this.sprite.vFrameIndex + 1) % this.sprite.vFrames;
         }
     }

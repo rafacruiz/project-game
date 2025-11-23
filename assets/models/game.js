@@ -17,13 +17,15 @@ class Game {
         this.indianaJones = new Indianajones(this.ctx, 0, 0);
         this.indianaJones.groundTo(this.canvas.height - GROUND_Y);
 
-        this.levelLifePlayer = 100; // Mirar si esta en uso
+        this.levelLifePlayer = 100; // Ver si esta en uso
         this.levelStartTime = Date.now();
 
         this.transitionNextLevel = null;
         this.transitionStart = 0;
                         
         this.enemies = [];
+
+        this.powers = [];
 
         this.floatingTexts = [];
 
@@ -55,12 +57,41 @@ class Game {
         this.drawIntervalId = undefined;
     }
 
+    showEnemiesSteal() {
+        const spawnTime1 = Math.random() * LEVEL_DURATION;
+
+        setTimeout(() => {
+            const monkey = new Monkey(this.ctx, -1, SP_ENEMIES_RANDOM[0]);
+            monkey.showRandom();
+            monkey.groundTo(this.canvas.height - GROUND_Y);
+            this.enemies.push(monkey);
+        }, spawnTime1);
+    }
+
+    showPowersUpGun() {
+        const indiGun = new Gun(this.ctx, SP_POWERS_RANDOM[0]);
+
+        indiGun.groundTo(this.canvas.height - GROUND_Y);
+        indiGun.rangeTo(this.canvas.width);
+        
+        this.powers.push(indiGun);
+    }
+
+    showPowerUpLife() {
+        const indiLife = new Lifeup(this.ctx, SP_POWERS_RANDOM[1]);
+
+        indiLife.groundTo(this.canvas.height - GROUND_Y);
+        indiLife.rangeTo(this.canvas.width);
+
+        this.powers.push(indiLife);
+    }
+
     showEnemiesRandom() {
 
-        if (this.enemyInterval) {
-            clearInterval(this.enemyInterval);
-        }
-        
+        if (this.enemyInterval) clearInterval(this.enemyInterval);
+    
+        //if (this.background.isFadeTransition) return; REVISAR
+
         console.info('Enemies Level: ', this.background.currentLevel + 1);
 
         switch (this.background.currentLevel + 1) {
@@ -78,7 +109,13 @@ class Game {
 
                     this.enemies.push(enemy);
 
-                }, SP_ENEMY_SPAWN_INTERVAL);                
+                }, SP_ENEMY_SPAWN_INTERVAL_LEVEL1);
+                
+                this.showPowersUpGun();
+
+                this.showPowerUpLife();
+
+                this.showEnemiesSteal();
                 break;
             case 2:
                 this.enemyInterval = setInterval(() => {
@@ -96,9 +133,7 @@ class Game {
                         case 0:
                             heightEnemy = (this.canvas.height - GROUND_Y) 
                                             - (8 + Math.random() * 70);
-                            
-                            console.log('Altura pajaro: ', heightEnemy);
-                    
+                                               
                             enemy = new Bat(this.ctx, speedEnemy, enemyRandom);
                             enemy.groundTo(heightEnemy);
                             break;
@@ -111,18 +146,24 @@ class Game {
                     }
                     
                     this.enemies.push(enemy);
-                }, 700);
+                }, SP_ENEMY_SPAWN_INTERVAL_LEVEL2);
+
+                this.showEnemiesSteal();
                 break;
             case 3:
                 this.enemyInterval = setInterval(() => {
 
                     const speedEnemy =  -(3 + Math.random() * 2);
                     
-                    const enemy = new Skeleton(this.ctx, speedEnemy, SP_ENEMIES_LEVEL4[0]);
+                    const enemy = new Skeleton(this.ctx, speedEnemy, SP_ENEMIES_LEVEL3[0]);
                     enemy.groundTo(this.canvas.height - GROUND_Y);
 
                     this.enemies.push(enemy);
-                }, 700);
+                }, SP_ENEMY_SPAWN_INTERVAL_LEVEL3);
+
+                this.showPowersUpGun();
+
+                this.showEnemiesSteal();
                 break;
         }
     }
@@ -217,15 +258,34 @@ class Game {
                 if (bullet.collidesWith(enemy) && !bullet.isUsed) {
                     enemy.isDead = true;
                     bullet.isUsed = true;
-                    console.log('colision');
                 }
             }
         }
 
+        for (const power of this.powers) {
+            if (this.indianaJones.collidesWith(power) && 
+                !power.isUsed) {
+
+                power.isUsed = true;
+
+                if (power instanceof Lifeup) {
+                    this.indianaJones.indiLife = Math.min(
+                        100,
+                        this.indianaJones.indiLife + (power.life || 0)
+                    );
+                }
+                
+                this.indianaJones.indiWeaponGun = true;
+                this.indianaJones.indiBullets = power.bullets;
+            }
+        }
+
         for(const enemy of this.enemies) {
-            if (this.indianaJones.collidesWith(enemy) 
-                && !this.background.isFadeTransition
-                && !enemy.isUsed) {
+            if (this.indianaJones.collidesWith(enemy) && 
+                !this.background.isFadeTransition && 
+                !enemy.isUsed) {
+
+                if (enemy instanceof Monkey) this.indianaJones.indiWeaponGun = false;
 
                 this.indianaJones.indiLife -= enemy.damage;
 
@@ -240,6 +300,8 @@ class Game {
                 console.log('Health player: ', this.indianaJones.indiLife);
             }
         }
+
+        console.log(this.enemies);
     }
 
     gameWin() {
@@ -272,11 +334,17 @@ class Game {
             return !text.isDead();
         });
 
+        this.powers = this.powers.filter(power => {
+            return !power.isUsed;
+        });
+
         this.indianaJones.clear();
     }
 
     move() {
         this.enemies.forEach((enemy) => enemy.move());
+
+        this.powers.forEach(power => power.update());
         
         this.indianaJones.move();
 
@@ -288,6 +356,8 @@ class Game {
         
         if (!this.background.isFadeTransition) {   
             this.enemies.forEach((enemy) => enemy.draw());
+
+            this.powers.forEach((power) => power.draw());
         }
 
         this.floatingTexts.forEach((text) => text.draw());

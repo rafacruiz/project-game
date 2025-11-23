@@ -30,6 +30,8 @@ class Indianajones {
         this.indiIsShoot = false;
         this.indiDirection = 'right';
         this.indiLife = 100;
+        this.indiWeaponGun = false;
+        this.indiBullets = 0;
         this.indiGameOver = false;
 
         this.levelEnd = false;
@@ -99,27 +101,35 @@ class Indianajones {
                 }
                 break;
             case KEY_SHOOT:
-                if (isPressButton) {
-                    if (!this.indiIsShoot && !this.indiIsJumping && !this.indiIsDown) {
-                        this.indiIsShoot = true;
+                if (this.indiWeaponGun) {
+                    if (isPressButton) {
+                        if (!this.indiIsShoot && 
+                            !this.indiIsJumping && 
+                            !this.indiIsDown && 
+                            this.indiBullets > 0) {
+                                
+                            this.indiIsShoot = true;
 
-                        let bulletX = 0;
-                        let bulletVx = 0;
+                            let bulletX = 0;
+                            let bulletVx = 0;
 
-                        if (this.indiDirection === 'right') {
-                            bulletX = this.x + this.w + 3;
-                            bulletVx = 3;
-                        } else {
-                            bulletX = this.x - 10;
-                            bulletVx = -3;
+                            if (this.indiDirection === 'right') {
+                                bulletX = this.x + this.w + 3;
+                                bulletVx = 3;
+                            } else {
+                                bulletX = this.x - 10;
+                                bulletVx = -3;
+                            }
+
+                            this.indiBullets--;
+
+                            this.bullets.push(
+                                new Bullet(this.ctx, bulletX, this.y + this.h / 3, 16, 10, bulletVx)
+                            );
                         }
-
-                        this.bullets.push(
-                            new Bullet(this.ctx, bulletX, this.y + this.h / 3, 16, 10, bulletVx)
-                        );
+                    } else {
+                        this.indiIsShoot = false;
                     }
-                } else {
-                    this.indiIsShoot = false;
                 }
                 break;
         }
@@ -165,17 +175,19 @@ class Indianajones {
 
     animate() {
         if (this.indiIsJumping) {
-            //this.sprite.frameIndexH = 8;
-            //this.sprite.frameIndexV = 0;
             this.animateFrames(5, 1, 2, 18);
+
         } else if (this.indiIsDown) {
             this.sprite.frameIndexH = 5;
             this.sprite.frameIndexV = 0;
+
         } else if (this.vx !== 0) {
             if (this.indiDirection === 'right') this.animateFrames(3, 0, 9, 5)
             else this.animateFrames(4, 0, 9, 5);
+
         } else if (this.levelEnd) {
             this.animateFrames(1, 0, 5, 17);
+
         } else if (this.indiIsShoot) {
             if (this.indiDirection === 'right') {
                 this.sprite.frameIndexH = 6;
@@ -184,11 +196,13 @@ class Indianajones {
                 this.sprite.frameIndexH = 7;
                 this.sprite.frameIndexV = 0;
             }
-                //this.animateFrames(6, 0, 4, 5)
-                //this.animateFrames(7, 0, 4, 5);
+            //this.animateFrames(6, 0, 4, 5)
+            //this.animateFrames(7, 0, 4, 5);
+
         } else if (this.indiLife <= 0) {
             this.animateFrames(8, 0, 5, 12);
             this.indiGameOver = true;
+
         } else {
             //this.sprite.frameIndexH = 0;
             //this.sprite.frameIndexV = 0;
