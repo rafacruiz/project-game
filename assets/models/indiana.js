@@ -34,6 +34,10 @@ class Indianajones {
         this.indiBullets = 0;
         this.indiGameOver = false;
 
+        this.speedMultiplier = 1;
+        
+        this.slowed = false;
+
         this.levelEnd = false;
 
         this.drawCount = 0;
@@ -138,7 +142,7 @@ class Indianajones {
     move() {
         this.vy += this.ay;
 
-        this.x += this.vx;
+        this.x += this.vx * this.speedMultiplier;
         this.y += this.vy;
 
         if (this.y > this.ground) {
@@ -196,16 +200,11 @@ class Indianajones {
                 this.sprite.frameIndexH = 7;
                 this.sprite.frameIndexV = 0;
             }
-            //this.animateFrames(6, 0, 4, 5)
-            //this.animateFrames(7, 0, 4, 5);
-
         } else if (this.indiLife <= 0) {
             this.animateFrames(8, 0, 5, 12);
             this.indiGameOver = true;
 
         } else {
-            //this.sprite.frameIndexH = 0;
-            //this.sprite.frameIndexV = 0;
             this.animateFrames(0, 0, 3, 45);
         }
     }

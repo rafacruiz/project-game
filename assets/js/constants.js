@@ -36,6 +36,7 @@ const SP_ENEMY_BAT          = '/assets/images/sprites/enemies/enemy-bat.png';
 const SP_ENEMY_RAT          = '/assets/images/sprites/enemies/enemy-rat.png';
 const SP_ENEMY_SQUELETON    = '/assets/images/sprites/enemies/enemy-squeleton.png';
 const SP_ENEMY_MONKEY       = '/assets/images/sprites/enemies/enemy-monkey.png';
+const SP_ENEMY_FIRE_GROUND  = '/assets/images/sprites/effects/enemy-fire-ground.png';
 
 const SP_ENEMIES_RANDOM = [
                 {src: SP_ENEMY_MONKEY, w: 40, h: 40, framesV: 4, framesH: 1, direction: CANVAS_W + 5}];
@@ -49,7 +50,8 @@ const SP_ENEMIES_LEVEL2 = [
                 { src: SP_ENEMY_RAT, w: 30, h: 25, framesV: 4, framesH: 1, direction: CANVAS_W + 5 }];
 
 const SP_ENEMIES_LEVEL3 = [
-                {src: SP_ENEMY_SQUELETON, w: 85, h: 110, framesV: 3, framesH: 1, direction: CANVAS_W + 5}];
+                {src: SP_ENEMY_SQUELETON, w: 85, h: 110, framesV: 3, framesH: 1, direction: CANVAS_W + 5},
+                {src: SP_ENEMY_FIRE_GROUND, w: 800, h: 20, framesV: 1, framesH: 2, direction: 0, initV: 0, initH: 0}];
 
 // Tiempo que se muestra en pantalla                
 const POWERUP_DURATION = 5000;

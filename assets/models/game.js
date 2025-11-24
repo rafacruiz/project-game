@@ -90,6 +90,16 @@ class Game {
         this.powers.push(indiLife);
     }
 
+    spawnFireGround() {
+        const config = SP_ENEMIES_LEVEL3[1];
+
+        const fire = new fireGround(this.ctx, config, 10000);
+        
+        fire.groundTo(this.canvas.height - GROUND_Y);
+        
+        this.enemies.push(fire);
+    }
+
     showEnemiesRandom() {
 
         if (this.enemyInterval) clearInterval(this.enemyInterval);
@@ -123,6 +133,8 @@ class Game {
                     this.showPowerUpLife();
 
                     this.showEnemiesSteal();
+
+                    this.spawnFireGround();
                 }, SP_POWER_UP_LEVEL1);
                 break;
             case 2:
@@ -177,6 +189,8 @@ class Game {
                     this.showPowerUpLife();
 
                     this.showEnemiesSteal();
+
+                    this.spawnFireGround();
                 }, SP_POWER_UP_LEVEL3);
                 break;
         }
@@ -298,6 +312,30 @@ class Game {
             if (this.indianaJones.collidesWith(enemy) && 
                 !this.background.isFadeTransition && 
                 !enemy.isUsed) {
+                
+                if (enemy instanceof fireGround) {
+                    if (!this.indianaJones.slowed && enemy.shouldSlowPlayer) {
+                        this.indianaJones.slowed = true;
+
+                        this.indianaJones.speedMultiplier = 0.4;
+
+                        setTimeout(() => {
+                            this.indianaJones.speedMultiplier = 1;
+                            this.indianaJones.slowed = false;
+                        }, 1500);
+                    }
+
+                    this.floatingTexts.push(
+                        new FloatingDamage(
+                            this.ctx, 
+                            "🔥", 
+                            this.indianaJones.x, 
+                            this.indianaJones.y, 
+                            5)
+                    );
+
+                    continue;
+                }
 
                 if (enemy instanceof Monkey) this.indianaJones.indiWeaponGun = false;
 
@@ -352,7 +390,8 @@ class Game {
         this.enemies = this.enemies.filter(enemy => {
             return !enemy.isDead && 
             ((enemy.vx < 0 && enemy.x + enemy.w > 0) ||
-            (enemy.vx > 0 && enemy.x < this.canvas.width));
+            (enemy.vx > 0 && enemy.x < this.canvas.width) ||
+            enemy.vx === 0);
         });
 
         this.floatingTexts = this.floatingTexts.filter(text => {
@@ -368,7 +407,10 @@ class Game {
     }
 
     move() {
-        this.enemies.forEach((enemy) => enemy.move());
+        this.enemies.forEach((enemy) => {
+            enemy.move();
+            if (enemy.update) enemy.update();
+        });
 
         this.powers.forEach(power => power.update());
         
