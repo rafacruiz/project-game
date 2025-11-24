@@ -17,6 +17,7 @@ const UI_COLOR_TEXT_LOW = "#f0a100";
 const UI_COLOR_TEXT_MEDIUM = "#f04c00ff"
 const UI_COLOR_TEXT_CRITICAL = "#f00000ff";
 const UI_GAME_OVER = '/assets/images/utils/game-over.png';
+const UI_YOU_WIN   = '/assets/images/utils/game-you-win.png';
 
 const UTILS_TOOLS = ['/assets/images/utils/game-number.png',
                     '/assets/images/utils/game-score-bullets.png'];

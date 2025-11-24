@@ -21,11 +21,16 @@ class Ui {
         this.gameOverImg.src = UI_GAME_OVER;
         this.gameOverReady = false;
         
-        this.gameOverImg.onload = () => {
-            this.gameOverReady = true;
-        };
+        this.gameOverImg.onload = () => this.gameOverReady = true;
+
+        this.youWinImg = new Image();
+        this.youWinImg.src = UI_YOU_WIN;
+        this.youWinReady = false;
+
+        this.youWinImg.onload = () => this.youWinReady = true;
 
         this.showGameOver = false;
+        this.showYouWin = false;
     }
 
     loadImage() {
@@ -116,5 +121,21 @@ class Ui {
         const y = (this.ctx.canvas.height - h) / 2;
 
         this.ctx.drawImage(this.gameOverImg, x, y, w, h);
+    }
+
+    activateYouWin() {
+        this.showYouWin = true;
+    }
+
+    drawYouWin() {
+        if (!this.showYouWin || !this.youWinReady) return;
+
+        const w = this.youWinImg.width;
+        const h = this.youWinImg.height;
+
+        const x = (this.ctx.canvas.width - w) / 2;
+        const y = (this.ctx.canvas.height - h) / 2;
+
+        this.ctx.drawImage(this.youWinImg, x, y, w, h);
     }
 }

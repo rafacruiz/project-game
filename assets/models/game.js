@@ -20,7 +20,6 @@ class Game {
         this.indianaJones = new Indianajones(this.ctx, 0, 0);
         this.indianaJones.groundTo(this.canvas.height - GROUND_Y);
 
-        //this.levelLifePlayer = 100; // Ver si esta en uso
         this.levelStartTime = Date.now();
 
         this.transitionNextLevel = null;
@@ -320,8 +319,11 @@ class Game {
 
     gameWin() {
         if (this.indianaJones.indiLife > 0 && this.background.currentLevel > BG_MAIN.length - 1) {
-            this.stop();
             console.log('YOUR WIN!!');
+
+            this.stop();
+
+            this.uiPlayer.activateYouWin();
         }
     }
 
@@ -395,5 +397,6 @@ class Game {
         }
 
         this.uiPlayer.drawGameOver();
+        this.uiPlayer.drawYouWin();
     }
 }
