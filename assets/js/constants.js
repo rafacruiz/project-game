@@ -4,27 +4,26 @@ const CANVAS_H = 600;
 
 const GROUND_Y = 150;
 
-const UI_COLOR_TEXT = "#f0a100";
-const UI_TYPE_TEXT = " Public Pixel";
-
-const UI_COLOR_TEXT_LOW = "#f0a100";
-const UI_COLOR_TEXT_MEDIUM = "#f04c00ff"
-const UI_COLOR_TEXT_CRITICAL = "#f00000ff";
-
 const FPS = 1000 / 60;
 
 const LEVEL_DURATION = 10000 * 6;
 const TRANSITION_FADE_DURATION = 3000;
 const TRANSITION_PAUSE_DURATION = 3000;
 
+const UI_COLOR_TEXT = "#f0a100";
+const UI_TYPE_TEXT = " Public Pixel";
+
+const UI_COLOR_TEXT_LOW = "#f0a100";
+const UI_COLOR_TEXT_MEDIUM = "#f04c00ff"
+const UI_COLOR_TEXT_CRITICAL = "#f00000ff";
+const UI_GAME_OVER = '/assets/images/utils/game-over.png';
+
 const UTILS_TOOLS = ['/assets/images/utils/game-number.png',
                     '/assets/images/utils/game-score-bullets.png'];
 
 const BG_MAIN = ['/assets/images/bgs/backg1.png',
                 '/assets/images/bgs/backg2.png',
-                '/assets/images/bgs/backg4.png',];
-
-const BG_VX = 5; // Comprobar
+                '/assets/images/bgs/backg4.png'];
 
 const SP_ENEMY_SPAWN_INTERVAL_LEVEL1 = 1500;
 const SP_ENEMY_SPAWN_INTERVAL_LEVEL2 = 700;
@@ -54,22 +53,22 @@ const SP_ENEMIES_LEVEL3 = [
 const POWERUP_DURATION = 5000;
 const POWERUP_DURATION_LIFE = 3500;
 const POWERUP_DURATION_GUN  = 5000;
+const POWERUP_BULLETS = 5;
+const POWERUP_NEW_LIFE_PLAYER = 10;
 
 const SP_POWERUP_GUN        = '/assets/images/sprites/powerups/power-gun.png';
 const SP_POWERUP_LIFE       = '/assets/images/sprites/powerups/power-life.png';
 
 const SP_POWERS_RANDOM = [
                 {src: SP_POWERUP_GUN, w: 24, h: 24, framesV: 3, framesH: 1, direction: 0},
-                {src: SP_POWERUP_LIFE, w: 16, h: 16, framesV: 7, framesH: 1, direction: 0}];
-
-const INDI_BULLETS = 5;
-
-const NEW_LIFE_PLAYER = 10;
+                {src: SP_POWERUP_LIFE, w: 20, h: 20, framesV: 7, framesH: 1, direction: 0}];
 
 const SP_POWER_UP_LEVEL1 = 20000;
 const SP_POWER_UP_LEVEL3 = 10000;
 
 const SP_INDI = '/assets/images/sprites/sp-indiana.png';
+
+const INDI_LIFE = 100;
 
 const INDI_HEIGHT = 90;
 const INDI_WIDTH = 80;

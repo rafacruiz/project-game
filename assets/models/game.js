@@ -9,6 +9,8 @@ class Game {
         this.fps = FPS;
 
         this.drawIntervalId = undefined;
+        this.enemyInterval = undefined;
+        this.lifeInterval = undefined;
                     
         this.background = new Background(this.ctx);
 
@@ -18,7 +20,7 @@ class Game {
         this.indianaJones = new Indianajones(this.ctx, 0, 0);
         this.indianaJones.groundTo(this.canvas.height - GROUND_Y);
 
-        this.levelLifePlayer = 100; // Ver si esta en uso
+        //this.levelLifePlayer = 100; // Ver si esta en uso
         this.levelStartTime = Date.now();
 
         this.transitionNextLevel = null;
@@ -30,13 +32,9 @@ class Game {
 
         this.floatingTexts = [];
 
-        this.setupListeners();
-
-        this.enemyInterval = undefined;
-
-        this.lifeInterval = undefined;
-
         this.currentLoadedLevel = undefined;
+
+        this.setupListeners();
     }
 
     start() {
@@ -49,8 +47,6 @@ class Game {
                 this.checkLevel();
                 this.checkColisions();
                 this.draw();
-                this.uiPlayer.drawHUD(this.background.currentLevel + 1, this.levelStartTime, this.indianaJones.indiLife);
-                this.uiScore.draw(this.indianaJones.indiBullets, this.indianaJones.indiWeaponGun);
             }, this.fps);
         }
     }
@@ -58,6 +54,12 @@ class Game {
     stop() {
         clearInterval(this.drawIntervalId);
         this.drawIntervalId = undefined;
+
+        clearInterval(this.enemyInterval);
+        this.enemyInterval = undefined;
+
+        clearInterval(this.lifeInterval);
+        this.lifeInterval = undefined;
     }
 
     showEnemiesSteal() {
@@ -326,8 +328,14 @@ class Game {
     gameOver() {
         if (this.indianaJones.indiLife <= 0) {
             if (this.indianaJones.indiGameOver) {
+                console.log('GAME OVER!!');
+                
+                this.enemies = [];
+                this.powers = [];
+
                 this.stop();
-                console.log('GAME OVER!!')
+
+                this.uiPlayer.activateGameOver();
             }
         }
     }
@@ -375,5 +383,17 @@ class Game {
         this.floatingTexts.forEach((text) => text.draw());
                 
         this.indianaJones.draw();
+
+        if (this.background.currentLevel >= 0) {
+
+            this.uiPlayer.drawHUD(
+                    this.background.currentLevel + 1, 
+                    this.levelStartTime, 
+                    this.indianaJones.indiLife);
+        
+            this.uiScore.draw(this.indianaJones.indiBullets, this.indianaJones.indiWeaponGun);
+        }
+
+        this.uiPlayer.drawGameOver();
     }
 }

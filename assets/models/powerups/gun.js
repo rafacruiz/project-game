@@ -3,7 +3,7 @@ class Gun extends Powerup {
     constructor (ctx, config, x, y) {
         super(ctx, config, x, y);
 
-        this.bullets = INDI_BULLETS;
+        this.bullets = POWERUP_BULLETS;
 
         this.duration = POWERUP_DURATION_GUN;
     }

@@ -20,7 +20,6 @@ class Background {
         
         this.isFadeTransition = false;
         this.fadeTransitionState = 'playing'; // 'playing' | 'fade'
-        this.fadeTimeTransition = 0;
 
         this.fadeOpacity = 0;
         this.fadeAmount = 0.02;

@@ -16,6 +16,16 @@ class Ui {
         this.isCountDown = false;
         this.countdownTimer = 0;
         this.countdown = 0;
+
+        this.gameOverImg = new Image();
+        this.gameOverImg.src = UI_GAME_OVER;
+        this.gameOverReady = false;
+        
+        this.gameOverImg.onload = () => {
+            this.gameOverReady = true;
+        };
+
+        this.showGameOver = false;
     }
 
     loadImage() {
@@ -90,5 +100,21 @@ class Ui {
         this.ctx.fillText("Level: " + levelGame, this.x, this.y);
         this.ctx.fillText("Life: " + Math.floor(lifePlayer), this.x + 120, this.y);
         this.ctx.fillText("Time: " + this.timeGameRemain(timeGame).toFixed(2), this.x + 240, this.y);
+    }
+
+    activateGameOver() {
+        this.showGameOver = true;
+    }
+
+    drawGameOver() {
+        if (!this.showGameOver || !this.gameOverReady) return;
+
+        const w = this.gameOverImg.width;
+        const h = this.gameOverImg.height;
+
+        const x = (this.ctx.canvas.width - w) / 2;
+        const y = (this.ctx.canvas.height - h) / 2;
+
+        this.ctx.drawImage(this.gameOverImg, x, y, w, h);
     }
 }

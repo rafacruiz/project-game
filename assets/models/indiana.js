@@ -29,7 +29,7 @@ class Indianajones {
         this.indiIsDown = false;
         this.indiIsShoot = false;
         this.indiDirection = 'right';
-        this.indiLife = 100;
+        this.indiLife = INDI_LIFE;
         this.indiWeaponGun = false;
         this.indiBullets = 0;
         this.indiGameOver = false;
