@@ -51,6 +51,7 @@ const SP_ENEMIES_LEVEL2 = [
 const SP_ENEMIES_LEVEL3 = [
                 {src: SP_ENEMY_SQUELETON, w: 85, h: 110, framesV: 3, framesH: 1, direction: CANVAS_W + 5}];
 
+// Tiempo que se muestra en pantalla                
 const POWERUP_DURATION = 5000;
 const POWERUP_DURATION_LIFE = 3500;
 const POWERUP_DURATION_GUN  = 5000;
@@ -64,6 +65,7 @@ const SP_POWERS_RANDOM = [
                 {src: SP_POWERUP_GUN, w: 24, h: 24, framesV: 3, framesH: 1, direction: 0},
                 {src: SP_POWERUP_LIFE, w: 20, h: 20, framesV: 7, framesH: 1, direction: 0}];
 
+// Intervalo para nº veces que se muestra
 const SP_POWER_UP_LEVEL1 = 20000;
 const SP_POWER_UP_LEVEL3 = 10000;
 

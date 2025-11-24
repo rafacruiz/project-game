@@ -114,7 +114,7 @@ class Game {
                     enemy.groundTo(this.canvas.height - GROUND_Y);
 
                     this.enemies.push(enemy);
-
+                    
                 }, SP_ENEMY_SPAWN_INTERVAL_LEVEL1);
                 
                 this.showPowersUpGun();
@@ -318,8 +318,12 @@ class Game {
     }
 
     gameWin() {
-        if (this.indianaJones.indiLife > 0 && this.background.currentLevel > BG_MAIN.length - 1) {
+        if (this.indianaJones.indiLife > 0 
+            && this.background.currentLevel > BG_MAIN.length - 1) {
             console.log('YOUR WIN!!');
+
+            this.enemies = [];
+            this.powers = [];
 
             this.stop();
 
