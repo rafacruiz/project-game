@@ -168,9 +168,11 @@ class Game {
                     this.enemies.push(enemy);
                 }, SP_ENEMY_SPAWN_INTERVAL_LEVEL2);
 
-                this.showPowerUpLife();
+                this.lifeInterval = setInterval(() => {
+                    this.showPowerUpLife();
 
-                this.showEnemiesSteal();
+                    this.showEnemiesSteal();
+                }, SP_POWER_UP_LEVEL2);
                 break;
             case 3:
                 this.enemyInterval = setInterval(() => {

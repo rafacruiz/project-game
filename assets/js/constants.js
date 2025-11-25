@@ -58,7 +58,7 @@ const POWERUP_DURATION = 5000;
 const POWERUP_DURATION_LIFE = 3500;
 const POWERUP_DURATION_GUN  = 5000;
 const POWERUP_BULLETS = 5;
-const POWERUP_NEW_LIFE_PLAYER = 10;
+const POWERUP_NEW_LIFE_PLAYER = 20;
 
 const SP_POWERUP_GUN        = '/assets/images/sprites/powerups/power-gun.png';
 const SP_POWERUP_LIFE       = '/assets/images/sprites/powerups/power-life.png';
@@ -69,6 +69,7 @@ const SP_POWERS_RANDOM = [
 
 // Intervalo para nº veces que se muestra
 const SP_POWER_UP_LEVEL1 = 20000;
+const SP_POWER_UP_LEVEL2 = 10000;
 const SP_POWER_UP_LEVEL3 = 10000;
 
 const SP_INDI = '/assets/images/sprites/sp-indiana.png';
